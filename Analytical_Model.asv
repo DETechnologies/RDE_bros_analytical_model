@@ -42,10 +42,10 @@ disp([' ']);
 disp(['   Pressure: ',num2str(P1),' (Pa)']);
 disp(['   Temperature: ',num2str(T1),' (K)']);
 disp(['   Density: ',num2str(R1),' (kg/m3)']);
-disp(['   c1 (frozen): ',num2str(c1_fr),' (m/s) -- speed of sound in propellant']); %
-disp(['   gamma1 (frozen): ',num2str(gamma1_fr),'(unitless)']); %
-disp(['   Cp1 (frozen): ',num2str(cp1),' (J/K) ']); %
-disp(['   Mean Molecular Weight:  ',num2str(w1),'(kg/kmol) ']); 
+disp(['   c1 (frozen): ',num2str(c1_fr),' (m/s)']); %@shak what does this mean
+disp(['   gamma1 (frozen): ',num2str(gamma1_fr),' unitless ']); %
+disp(['   Cp1 (frozen): ',num2str(cp1),' ']); %@shak what does this mean; what are the units? m/s?
+disp(['   Mean Molecular Weight:  ',num2str(w1),' ']); %@shak are the units here kg/m^3
 
 %% Calculating von Neumann Point
 vN_Point = vN_State(P1, T1, q, mech, gas1);

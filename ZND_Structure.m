@@ -152,7 +152,7 @@ znd_plot(out,'maxx',0.1,'major_species',{'H2', 'O2', 'H2O'},...
 %%
 function lambda = gavrikov(delta,theta, Tvn, T0)
 % Correlation function for detonation cell width 
-% proposed by Gavrikov et al COMBUSTION AND FLAME 120:19�33 (2000)
+% proposed by Gavrikov et al COMBUSTION AND FLAME 120:19-33 (2000)
 % based on using a reaction zone length based on time to 50% limiting
 %       reactant consumption in constant volume explosion approximation using vn
 %       postshock velocity to convert time to distance.   Tested against a range
