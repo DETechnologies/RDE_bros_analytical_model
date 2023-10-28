@@ -18,7 +18,7 @@ clc;
 close all;
 disp('Analytical_Model')
 
-P1 = 506625; % [Pa] %~=5atm (nasa tabulated instance)
+P1 = 2533.12*10^3; % [Pa] %~=5atm (nasa tabulated instance)
 T1 = 313.16; % [K]
 q = 'H2:0.66667 O2:0.33333'; %exact stoichiometric ratio
 mech = 'h2o2.yaml'; %%yaml files come from here: C:\Program Files\Cantera\data

@@ -143,7 +143,7 @@ disp(['Westbrook correlation ',num2str(29*x_west, '%8.3e'),' m']);
 disp(['Cell width estimate (A=29) ',num2str(29*out.ind_len_ZND, '%8.3e'),' m']);
 %disp(['Cell size (lambda)',mun2str(lambda), '%8.3e']);
 disp(['Gavrikov correlation ',num2str(cell_gav, '%8.3e'),' m']);
-disp(['Ng et al Chi Parameter ',num2str(chi_ng, '%8.3e'),' m']);
+disp(['Ng et al Chi Parameter (not cell size!!!) ',num2str(chi_ng, '%8.3e'),' m']);
 disp(['Ng et al correlation ',num2str(cell_ng, '%8.3e'),' m']);
 
 znd_plot(out,'maxx',0.1,'major_species',{'H2', 'O2', 'H2O'},...
