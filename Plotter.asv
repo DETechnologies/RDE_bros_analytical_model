@@ -1,0 +1,41 @@
+%% Init 
+close all 
+clear 
+clc
+
+load("Output_data.mat")
+
+%% UI dropdown
+fig=uifigure("Name","Analytical Model Parameter Selector");
+f = uigridlayout(fig,[2 3]);
+g.RowHeight = {'1x','fit'};
+g.ColumnWidth = {'1x','fit','1x'};
+
+xval=uidropdown(f,"Items",[Output_dataNames(1,:)]);
+
+yval=uidropdown(f,"Items",[Output_dataNames(1,:)]);
+
+zval=uidropdown(f,"Items",[Output_dataNames(1,:)]);
+
+uibutton(f,"Text","Plot","ButtonPushedFcn",@(src,event) plot(src));
+
+%% main plot
+%plot these variable : 
+x=1;
+y=2;
+z=6;
+function plot(src,xval)
+    xIndex = find(contains(Output_dataNames(1,:),xval));
+    
+    figure("Name","Analytical Model O/P")
+    scatter3(Output(:,x),Output(:,y),Output(:,z));
+    title("Analytical Model O/P")
+    % xlabel(Output_dataNames(1,x))
+    % ylabel(Output_dataNames(1,y))
+    % zlabel(Output_dataNames(1,z))
+    
+    xlabel(xval)
+    ylabel(Output_dataNames(1,y))
+    zlabel(Output_dataNames(1,z))
+end 
+
