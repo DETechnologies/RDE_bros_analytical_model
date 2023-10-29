@@ -29,19 +29,19 @@ Results([5]) = St;
 Results([6]) = ct;
 Results([7]) = gammat_eq;
 
-%% Display Ideal Stagnation Properties
-disp(' ');
-disp('-------------------------------------------');
-disp( 'Ideal Rocket Impulse');
-
-disp(' ');
-disp(['Total pressure ',num2str(Pt),' (Pa)']);
-disp(['Total temperature ',num2str(Tt),' (K)']);
-disp(['Total density ',num2str(Rt),' (kg/m3)']);
-disp(['Total enthalpy ',num2str(Ht),' (J/kg-K)']);
-%disp(['Total entropy ',num2str(St),' (J/kg-K)']);
-disp(['Total sound speed (equilibrium) ',num2str(ct),' (m/s)']);
-disp(['gamma2 (equilibrium) ',num2str(gammat_eq),' (m/s)']);
+% %% Display Ideal Stagnation Properties
+% disp(' ');
+% disp('-------------------------------------------');
+% disp( 'Ideal Rocket Impulse');
+% 
+% disp(' ');
+% disp(['Total pressure ',num2str(Pt),' (Pa)']);
+% disp(['Total temperature ',num2str(Tt),' (K)']);
+% disp(['Total density ',num2str(Rt),' (kg/m3)']);
+% disp(['Total enthalpy ',num2str(Ht),' (J/kg-K)']);
+% %disp(['Total entropy ',num2str(St),' (J/kg-K)']);
+% disp(['Total sound speed (equilibrium) ',num2str(ct),' (m/s)']);
+% disp(['gamma2 (equilibrium) ',num2str(gammat_eq),' (m/s)']);
 
 %% ambient pressure for impulse computation
 Pa = 0.0;
@@ -83,10 +83,10 @@ Results([10]) = P(imax);
 Results([11]) = u_eq(imax);
 Results([12]) = u_fr(imax);
 
-%% Display Expanded Properties
-disp(' ');
-disp(['final pressure ',num2str(P(imax)),' (Pa)']);
-disp(['final specific impulse (eq) ',num2str(Isp_eq(imax)),' (s)']);
-disp(['final velocity (eq) ',num2str(u_eq(imax)),' (m/s)']);
-disp(['final specific impulse (fr) ',num2str(Isp_fr(imax)),' (s)']);
-disp(['final velocity (fr) ',num2str(u_fr(imax)),' (m/s)']);
+% %% Display Expanded Properties
+% disp(' ');
+% disp(['final pressure ',num2str(P(imax)),' (Pa)']);
+% disp(['final specific impulse (eq) ',num2str(Isp_eq(imax)),' (s)']);
+% disp(['final velocity (eq) ',num2str(u_eq(imax)),' (m/s)']);
+% disp(['final specific impulse (fr) ',num2str(Isp_fr(imax)),' (s)']);
+% disp(['final velocity (fr) ',num2str(u_fr(imax)),' (m/s)']);

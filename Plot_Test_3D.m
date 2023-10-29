@@ -8,32 +8,34 @@ mech = 'h2o2.yaml';
 X = [];
 Y = [];
 Z = [];
+Outputs = [];
 
 H2_s = 2;
 O2_s = 1;
 FAR_s = (H2_s/O2_s);
 
 % keep* length of iteration intervals the same
-for i = 500000:100000:1000000
-    X = [X, i];
+for P1 = 500e3:100e3:1000e3
+    X = [X, P1];
     
-    for j = 200:10:300
-        Y = [Y, j];
+    for T1 = 200:10:300
+        Y = [Y, T1];
         
-        for k = 0.1:0.4:2
-            Z = [Z, k];
+        for eqv = 0.1:0.4:2
+            Z = [Z, eqv];
 
-            FAR_a = k*FAR_s;
+            FAR_a = eqv*FAR_s;
             H2_a = FAR_a;
             O2_a = O2_s;
             q = 'H2:H2_a, O2:O2_a';
             
-            gasi = Solution(mech);
-            set(gasi,'Temperature',j,'Pressure',i,'MoleFractions',q);
+            gas1 = Solution(mech);
+            set(gas1,'Temperature',T1,'Pressure',P1,'MoleFractions',q);
             
-            CJ_Point = CJ_State(i, j, q, mech, gasi);
+            CJ_Point = CJ_State(P1, T1, q, mech, gas1);
             
-            append results to matrix
+            Outputs = [Outputs, CJ_Point];
+            Outputs = [Outputs, newline];
 
             Z = [Z, newline];
 

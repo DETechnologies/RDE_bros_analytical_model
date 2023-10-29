@@ -2,7 +2,7 @@
 function Results = ZND_Structure(P1, T1, q, mech, gas1)
 %% SET SHOCK SPEED
 [cj_speed, curve, ~, dnew, plot_data] = CJspeed(P1, T1, q, mech);
-CJspeed_plot(2,plot_data,curve,dnew)
+% CJspeed_plot(2,plot_data,curve,dnew)
 
 %%
 % FIND EQUILIBRIUM POST-SHOCK STATE FOR GIVEN SPEED
@@ -102,52 +102,52 @@ Results([22]) = cell_gav;
 
 %% Display Results
 
-disp([' ']);
-disp(['................................................................']);
-disp(['ZND computation results ']);
-
-disp([' ']);
-disp(['T (K): ??? = ' num2str(out.T(1),5)... 
-    newline '       final = ' num2str(out.T(b),5)... 
-    newline '       max = ' num2str(max(out.T(:)),5)]);
-disp(['P (Pa): ??? = ' num2str(out.P(1),3)...
-    newline '        final = ' num2str(out.P(b),3)...
-    newline '        max = ' num2str(max(out.P(:)),3)]);
-disp(['M: ??? = ' num2str(out.M(1),3)...
-    newline '   final = ' num2str(out.M(b),3)...
-    newline '   max = ' num2str(max(out.M(:)),3)]);
-disp(['u (m/s): ??? = ' num2str(out.U(1),5)...
-    newline '         final = ' num2str(out.U(b),5)...
-    newline '         cj = ' num2str(u_cj,5)]);
-
-disp([' ']);
-disp(['Reaction zone induction length = ',num2str(out.ind_len_ZND,'%8.3e'),' m']);
-disp(['Reaction zone induction time = ',num2str(out.ind_time_ZND,'%8.3e'),' s']);
-disp(['Reaction zone thermicity  pulse width (exothermic length) = ',num2str(out.exo_len_ZND,'%8.3e'),' m']);
-disp(['Reaction zone thermicity  pulse time (exothermic time) = ',num2str(out.exo_time_ZND, '%8.3e'),' s']);
-disp(['Reaction zone width (u_cj/sigmadot_max) = ',num2str(max_thermicity_width_ZND,'%8.3e'),' m']);
-
-disp([' ']);
-disp(['CV computation results; ']);
-%disp(['Time to dT/dt_max = ',num2str(CVout1.ind_time, '%8.3e'),' s']);
-%disp(['Distance to dT/dt_max = ',num2str(CVout1.ind_time*out.U(1), '%8.3e'),' m']);
-disp(['Reduced activation energy) = ',num2str(theta_effective_CV,'%8.3e')]);
-disp(['Time to 50% consumption = ',num2str(t_gav, '%8.3e'),' s']);
-disp(['Distance to 50% consumption = ',num2str(x_gav, '%8.3e'),' m']);
-%disp(['Time to 50% temperature rise = ',num2str(t_west, '%8.3e'),' s']);
-%disp(['Distance to 50% temperature = ',num2str(x_west, '%8.3e'),' m']);
-
-disp([' ']);
-disp(['Cell size predictions ']);
-disp(['Westbrook correlation ',num2str(29*x_west, '%8.3e'),' m']);
-disp(['Cell width estimate (A=29) ',num2str(29*out.ind_len_ZND, '%8.3e'),' m']);
-%disp(['Cell size (lambda)',mun2str(lambda), '%8.3e']);
-disp(['Gavrikov correlation ',num2str(cell_gav, '%8.3e'),' m']);
-disp(['Ng et al Chi Parameter (not cell size!!!) ',num2str(chi_ng, '%8.3e'),' m']);
-disp(['Ng et al correlation ',num2str(cell_ng, '%8.3e'),' m']);
-
-znd_plot(out,'maxx',0.1,'major_species',{'H2', 'O2', 'H2O'},...
-    'minor_species',{'H', 'O', 'OH', 'H2O2', 'HO2'});
+% disp([' ']);
+% disp(['................................................................']);
+% disp(['ZND computation results ']);
+% 
+% disp([' ']);
+% disp(['T (K): ??? = ' num2str(out.T(1),5)... 
+%     newline '       final = ' num2str(out.T(b),5)... 
+%     newline '       max = ' num2str(max(out.T(:)),5)]);
+% disp(['P (Pa): ??? = ' num2str(out.P(1),3)...
+%     newline '        final = ' num2str(out.P(b),3)...
+%     newline '        max = ' num2str(max(out.P(:)),3)]);
+% disp(['M: ??? = ' num2str(out.M(1),3)...
+%     newline '   final = ' num2str(out.M(b),3)...
+%     newline '   max = ' num2str(max(out.M(:)),3)]);
+% disp(['u (m/s): ??? = ' num2str(out.U(1),5)...
+%     newline '         final = ' num2str(out.U(b),5)...
+%     newline '         cj = ' num2str(u_cj,5)]);
+% 
+% disp([' ']);
+% disp(['Reaction zone induction length = ',num2str(out.ind_len_ZND,'%8.3e'),' m']);
+% disp(['Reaction zone induction time = ',num2str(out.ind_time_ZND,'%8.3e'),' s']);
+% disp(['Reaction zone thermicity  pulse width (exothermic length) = ',num2str(out.exo_len_ZND,'%8.3e'),' m']);
+% disp(['Reaction zone thermicity  pulse time (exothermic time) = ',num2str(out.exo_time_ZND, '%8.3e'),' s']);
+% disp(['Reaction zone width (u_cj/sigmadot_max) = ',num2str(max_thermicity_width_ZND,'%8.3e'),' m']);
+% 
+% disp([' ']);
+% disp(['CV computation results; ']);
+% %disp(['Time to dT/dt_max = ',num2str(CVout1.ind_time, '%8.3e'),' s']);
+% %disp(['Distance to dT/dt_max = ',num2str(CVout1.ind_time*out.U(1), '%8.3e'),' m']);
+% disp(['Reduced activation energy) = ',num2str(theta_effective_CV,'%8.3e')]);
+% disp(['Time to 50% consumption = ',num2str(t_gav, '%8.3e'),' s']);
+% disp(['Distance to 50% consumption = ',num2str(x_gav, '%8.3e'),' m']);
+% %disp(['Time to 50% temperature rise = ',num2str(t_west, '%8.3e'),' s']);
+% %disp(['Distance to 50% temperature = ',num2str(x_west, '%8.3e'),' m']);
+% 
+% disp([' ']);
+% disp(['Cell size predictions ']);
+% disp(['Westbrook correlation ',num2str(29*x_west, '%8.3e'),' m']);
+% disp(['Cell width estimate (A=29) ',num2str(29*out.ind_len_ZND, '%8.3e'),' m']);
+% %disp(['Cell size (lambda)',mun2str(lambda), '%8.3e']);
+% disp(['Gavrikov correlation ',num2str(cell_gav, '%8.3e'),' m']);
+% disp(['Ng et al Chi Parameter (not cell size!!!) ',num2str(chi_ng, '%8.3e'),' m']);
+% disp(['Ng et al correlation ',num2str(cell_ng, '%8.3e'),' m']);
+% 
+% znd_plot(out,'maxx',0.1,'major_species',{'H2', 'O2', 'H2O'},...
+%     'minor_species',{'H', 'O', 'OH', 'H2O2', 'HO2'});
 
 %%
 function lambda = gavrikov(delta,theta, Tvn, T0)
