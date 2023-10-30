@@ -29,9 +29,6 @@ b.Layout.Column = 2;
 
 %% main plot
 %plot these variable : 
-x=1;
-y=2;
-z=6;
 function plot(src,xval,yval,zval,Output_dataNames,Output)
     xIndex = find(contains(Output_dataNames(1,:),xval.Value));
     yIndex = find(contains(Output_dataNames(1,:),yval.Value));
