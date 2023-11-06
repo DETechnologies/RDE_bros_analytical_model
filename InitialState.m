@@ -8,7 +8,6 @@ eq(1,1)=h/(h+1); %hydrogen being converted to percentage
 eq(2,1)=1/(h+1); %oxygen mols being converted to percentage
 
 FAR= sprintf('H2:%d O2:%d',eq(1,1),eq(2,1)); %FuelAirRatio as percentage
-
 % disp(eqv_ratio)
 
 %this section is used to prove that the right equivalence ratio is being

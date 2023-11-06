@@ -18,12 +18,13 @@ clc;
 close all;
 disp('Analytical_Model')
 
-P1 = 2533.12*10^3; % [Pa] %~=5atm (nasa tabulated instance)
-T1 = 313.16; % [K]
-q = 'H2:0.66667 O2:0.33333'; %exact stoichiometric ratio
+P1 = 2473.+3; % [Pa]
+T1 = 323.15; % [K]
+eq=1.15;
 mech = 'h2o2.yaml'; %%yaml files come from here: C:\Program Files\Cantera\data
 gas1 = Solution(mech);
-set(gas1,'Temperature',T1,'Pressure',P1,'MoleFractions',q);
+q=InitialState(T1,P1,eq,gas1); %%this calculates the mol ratio of hydrogen to oxygen
+% set(gas1,'Temperature',T1,'Pressure',P1,'MoleFractions',q);
 
 %% Calculate & Print Initial State
 R1 = density(gas1); %[kg/m^3]
@@ -32,8 +33,7 @@ cp1 = cp_mass(gas1); %heat capacity of 1kg of the mixture [J]
 w1 = meanMolecularWeight(gas1); %mean molecular weight [kg/kmol]
 gamma1_fr =  c1_fr*c1_fr*R1/P1; %(v^2)*rho/P %ratio of heat capacities (cp/cv)
 alt_gamma_1 = cp_mass(gas1)/cv_mass(gas1); % gamma is the ratio of heat capacities; we have no clue 
-%how the original gamma1_fr calculates the right answer; units dont make
-%sens but alt_gamma_1 validates the solution
+    %how the original gamma1_fr calculates the right answer; units dont make sense but alt_gamma_1 validates the solution
 
 disp([' ']);
 disp(['................................................................']);
@@ -48,16 +48,16 @@ disp(['   Cp1 (frozen): ',num2str(cp1),' (J/K) ']); %
 disp(['   Mean Molecular Weight:  ',num2str(w1),'(kg/kmol) ']); 
 
 %% Calculating von Neumann Point
-vN_Point = vN_State(P1, T1, q, mech, gas1);
+vN_Point = vN_State_Shak(P1, T1, q, mech, gas1);
 
 %% Calculating CJ State
-CJ_Point = CJ_State(P1, T1, q, mech, gas1);
+CJ_Point = CJ_State_Shak(P1, T1, q, mech, gas1);
 
 %% Calculating ZND Detonation Structure
-Detonation_Structure = ZND_Structure(P1, T1, q, mech, gas1);
+Detonation_Structure = ZND_Structure_Shak(P1, T1, q, mech, gas1);
 
 %% Calculation of Rocket Impulse
-Impulse = Rocket_Impulse(T1, P1, q, mech);
+Impulse = Rocket_Impulse_Shak(T1, P1, q, mech);
 
 %% M_dot calculation
 % Equations taken from:
@@ -66,8 +66,8 @@ Impulse = Rocket_Impulse(T1, P1, q, mech);
 
 Thrust = 1000;
 g = 9.81;
-Isp_fr = Impulse(1,12);
-Isp_eq = Impulse(1,11);
+Isp_fr = Impulse(1,9);
+Isp_eq = Impulse(1,8);
 m_dot_fr = (Thrust)/(Isp_fr*g);
 m_dot_eq = (Thrust)/(Isp_eq*g);
 
