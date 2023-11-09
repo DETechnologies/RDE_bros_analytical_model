@@ -3,7 +3,7 @@ close all force
 clear 
 clc
 
-load("Output_data.mat")
+load("Output_data_641rows.mat")
 
 %% validate that the data is prepared the right way
 o=size(Output);

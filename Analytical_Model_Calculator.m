@@ -4,9 +4,9 @@ clc
 close all
 disp('Analytical Model Calculator')
 
-Pressure_range=[0.15e+6,2.533e+6,0.101e+6]; % low,high,step size % in pascals (range 1.5 atm to 25 atm, step 1 atm)
-Temp_range=[313.15,400.15,10]; % low,high,step size % in Kelvin
-eqv_ratio_range=[0.9,1.1,0.1];  % low,high,step size %no units
+Pressure_range=[0.15e+6,2.533e+6,(0.101e+6)/2]; % low,high,step size % in pascals (range 1.5 atm to 25 atm, step 1/2 atm)
+Temp_range=[313.15,600.15,10]; % low,high,step size % in Kelvin
+eqv_ratio_range=[0.90,1.10,0.5];  % low,high,step size %no units
 
 mech = 'h2o2.yaml'; %%yaml files come from here: C:\Program Files\Cantera\data
 gas_i = Solution(mech);
@@ -22,6 +22,7 @@ total_loops=p_steps*t_steps*eqv_steps;
 time_est=(total_loops*5)/60; %takes ~5s per loop
 
 fprintf("%d Number of Loops, Estimated ~ %d mins to complete",total_loops,time_est)
+fprintf('\n')
 
 %% How data is stored
 
@@ -45,49 +46,75 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
         for e=eqv_ratio_range(1,1):eqv_ratio_range(1,3):eqv_ratio_range(1,2)
             tic %start timer
             n=n+1;
-            
-            %this section gets initial parameters
+
+% %             this is start of
+% original-----------------------------------------------------------------------------
+                        %this section gets initial parameters
             FAR=InitialState(t,p,e,gas_i); %returns adjusted FuelAirRatio (H2:O2) based on eqv ratio 
             spd_sound_gas=soundspeed_fr(gas_i);
-
+            
             %this section is an alternative to using the vN_state.m fcn
             %(less variables)
             CJ_spd=CJspeed(p,t,FAR,mech);
             VN_gas=PostShock_fr(CJ_spd,p,t,FAR,mech);
             VN_pressure=pressure(VN_gas);
-
+            
             %this section gets CJ things using alternative to CJ_state fcn
             CJ_gas=PostShock_eq(CJ_spd,p,t,FAR,mech);           
             CJ_temp=temperature(CJ_gas);
             CJ_pressure=pressure(CJ_gas);
             CJ_density=density(CJ_gas);
-
+            
             %this section gets ZND things
             ZNDResults=ZND_Structure(p,t,FAR,mech,gas_i);
             ZND_out=zndsolve(VN_gas,gas_i,CJ_spd,'advanced_output',true,'t_end',2e-3);
-%             u_cj=CJ_spd*density(gas_i)/CJ_density;
-%             max_thermicity_width_ZND=u_cj/ZND_out.max_thermicity_ZND; %Ng et al definition
+            %             u_cj=CJ_spd*density(gas_i)/CJ_density;
+            %             max_thermicity_width_ZND=u_cj/ZND_out.max_thermicity_ZND; %Ng et al definition
             x_west=ZNDResults(18);
             max_thermicity_width_ZND=ZNDResults(19);
             cell_gav=ZNDResults(22);
             cell_ng=ZNDResults(21);
-
+            
             %this is rocket impulse things
             RResults=Rocket_Impulse(t,p,FAR,mech);
             eq_Isp=RResults(8);
             m_dot_eq=Thrust/(eq_Isp*g);
-
+            
             %geometry defns
             Minimum_Channel_OD=40*cell_gav;
             Minimum_Channel_Width=2.4*cell_gav;
             Minimum_Chamber_Length=24*cell_gav;
-
+            
             %this is where all the data gets stored each iteration
             Output(sz(1,1)+1,:)=[p,t,e,density(gas_i),spd_sound_gas,CJ_spd,VN_pressure,...
                                 CJ_temp,CJ_pressure,CJ_density,ZND_out.ind_len_ZND,ZND_out.ind_time_ZND,...
                                 ZND_out.exo_len_ZND,ZND_out.exo_time_ZND,max_thermicity_width_ZND,...
                                 29*x_west,29*ZND_out.ind_len_ZND,cell_gav,cell_ng,eq_Isp,m_dot_eq,...
                                 Minimum_Channel_OD,Minimum_Channel_Width,Minimum_Chamber_Length];
+
+
+
+% %         End of original -----------------------------------------------------------------------------
+            
+% % %  START OF NEW FANCY THING THAT DOESNT WORK YET
+
+%             Output=Calculator(p,t,e,gas_i,mech,Thrust,g,sz); %run in parallel to stop crazy
+
+% % %             Not working
+
+%             out=parfeval(@Calculator,24,p,t,e,gas_i,mech,Thrust,g,sz);
+%             didfinish=wait(out,'finished',10);
+%        
+%             if ~didfinish
+%                 cancel(out);
+%                 fprintf('skipping loop')
+%                 continue
+%                 %skips the rest of the for loop and gets back into the next one
+%             else
+%                 Output(sz(1,1)+1,:)=out.OutputArguments
+%                 fprintf("hi")
+%             end
+
             sz=size(Output);
             fprintf('\n \nlooptime: %d, loop number: %d of %d',toc,n,total_loops)
             save('Output_data.mat','Output',"Output_dataNames") %% saves the file as .mat file for later accessing saving here incase it errors out, overwrite each loop
@@ -95,5 +122,50 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
     end
 end
 
+%% main function
+function Output = Calculator(p,t,e,gas_i,mech,Thrust,g,sz)
 
+%this section gets initial parameters
+FAR=InitialState(t,p,e,gas_i); %returns adjusted FuelAirRatio (H2:O2) based on eqv ratio 
+spd_sound_gas=soundspeed_fr(gas_i);
 
+%this section is an alternative to using the vN_state.m fcn
+%(less variables)
+CJ_spd=CJspeed(p,t,FAR,mech);
+VN_gas=PostShock_fr(CJ_spd,p,t,FAR,mech);
+VN_pressure=pressure(VN_gas);
+
+%this section gets CJ things using alternative to CJ_state fcn
+CJ_gas=PostShock_eq(CJ_spd,p,t,FAR,mech);           
+CJ_temp=temperature(CJ_gas);
+CJ_pressure=pressure(CJ_gas);
+CJ_density=density(CJ_gas);
+
+%this section gets ZND things
+ZNDResults=ZND_Structure(p,t,FAR,mech,gas_i);
+ZND_out=zndsolve(VN_gas,gas_i,CJ_spd,'advanced_output',true,'t_end',2e-3);
+%             u_cj=CJ_spd*density(gas_i)/CJ_density;
+%             max_thermicity_width_ZND=u_cj/ZND_out.max_thermicity_ZND; %Ng et al definition
+x_west=ZNDResults(18);
+max_thermicity_width_ZND=ZNDResults(19);
+cell_gav=ZNDResults(22);
+cell_ng=ZNDResults(21);
+
+%this is rocket impulse things
+RResults=Rocket_Impulse(t,p,FAR,mech);
+eq_Isp=RResults(8);
+m_dot_eq=Thrust/(eq_Isp*g);
+
+%geometry defns
+Minimum_Channel_OD=40*cell_gav;
+Minimum_Channel_Width=2.4*cell_gav;
+Minimum_Chamber_Length=24*cell_gav;
+
+%this is where all the data gets stored each iteration
+Output(sz(1,1)+1,:)=[p,t,e,density(gas_i),spd_sound_gas,CJ_spd,VN_pressure,...
+                    CJ_temp,CJ_pressure,CJ_density,ZND_out.ind_len_ZND,ZND_out.ind_time_ZND,...
+                    ZND_out.exo_len_ZND,ZND_out.exo_time_ZND,max_thermicity_width_ZND,...
+                    29*x_west,29*ZND_out.ind_len_ZND,cell_gav,cell_ng,eq_Isp,m_dot_eq,...
+                    Minimum_Channel_OD,Minimum_Channel_Width,Minimum_Chamber_Length];
+
+end 
