@@ -4,9 +4,9 @@ clc
 close all
 disp('Analytical Model Calculator')
 
-Pressure_range=[0.15e+6,2.533e+6,(0.101e+6)/2]; % low,high,step size % in pascals (range 1.5 atm to 25 atm, step 1/2 atm)
-Temp_range=[313.15,600.15,10]; % low,high,step size % in Kelvin
-eqv_ratio_range=[0.90,1.10,0.5];  % low,high,step size %no units
+Pressure_range=[(0.101325e+6)/2,2.533e+6,(0.101e+6)]; % low,high,step size % in pascals (range 1.5 atm to 25 atm, step 1/2 atm)
+Temp_range=[173.15,373.15,10]; % low,high,step size % in Kelvin
+eqv_ratio_range=[0.75,1.15,0.05];  % low,high,step size %no units
 
 mech = 'h2o2.yaml'; %%yaml files come from here: C:\Program Files\Cantera\data
 gas_i = Solution(mech);
@@ -14,9 +14,9 @@ Thrust=1000;%N
 g=9.81;%m/s^2
 
 %% time collection estimate; 
-p_steps=(Pressure_range(1,2)-Pressure_range(1,1))/Pressure_range(1,3);
-t_steps=(Temp_range(1,2)-Temp_range(1,1))/Temp_range(1,3);
-eqv_steps=(eqv_ratio_range(1,2)-eqv_ratio_range(1,1))/eqv_ratio_range(1,3);
+p_steps=(Pressure_range(1,2)-Pressure_range(1,1))/Pressure_range(1,3)+1;
+t_steps=(Temp_range(1,2)-Temp_range(1,1))/Temp_range(1,3)+1;
+eqv_steps=(eqv_ratio_range(1,2)-eqv_ratio_range(1,1))/eqv_ratio_range(1,3)+1;
 
 total_loops=p_steps*t_steps*eqv_steps;
 time_est=(total_loops*5)/60; %takes ~5s per loop
