@@ -4,9 +4,13 @@ clc
 close all
 disp('Analytical Model Calculator')
 
-Pressure_range=[(0.101325e+6)/2,2.533e+6,(0.101e+6)]; % low,high,step size % in pascals (range 1.5 atm to 25 atm, step 1/2 atm)
+% Pressure_range=[(0.101325e+6)/2,2.533e+6,(0.101e+6)]; % low,high,step size % in pascals (range 1.5 atm to 25 atm, step 1/2 atm)
+% Temp_range=[173.15,373.15,10]; % low,high,step size % in Kelvin
+% eqv_ratio_range=[0.75,1.15,0.05];  % low,high,step size %no units
+
+Pressure_range=[7.5766e+5,2.533e+6,(0.101e+6)]; % low,high,step size % in pascals (range 1.5 atm to 25 atm, step 1/2 atm)
 Temp_range=[173.15,373.15,10]; % low,high,step size % in Kelvin
-eqv_ratio_range=[0.75,1.15,0.05];  % low,high,step size %no units
+eqv_ratio_range=[0.75,1.15,0.1];  % low,high,step size %no units
 
 mech = 'h2o2.yaml'; %%yaml files come from here: C:\Program Files\Cantera\data
 gas_i = Solution(mech);

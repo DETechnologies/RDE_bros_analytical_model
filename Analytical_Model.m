@@ -18,9 +18,9 @@ clc;
 close all;
 disp('Analytical_Model')
 
-P1 = 1210500; % [Pa]
-T1 =433.15;% [K]
-eq=0.90;
+P1 = 7.5766e+5; % [Pa]
+T1 =213.15;% [K]
+eq=1;
 mech = 'h2o2.yaml'; %%yaml files come from here: C:\Program Files\Cantera\data
 gas1 = Solution(mech);
 q=InitialState(T1,P1,eq,gas1); %%this calculates the mol ratio of hydrogen to oxygen
