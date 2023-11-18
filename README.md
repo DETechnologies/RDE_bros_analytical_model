@@ -42,5 +42,5 @@ Notice the window titles (top left of each window) indicate which type of plots 
 
 For both windows, when you are happy with your variables to plot, click the "Plot" button and a plot with those variables will be displayed. Repeat as many times as you wish, neither the plots nor UI windows will close.
 
-![3D Plot example](Assets/3D_ip_temp_pressure_channelOD.fig)
-![2D 2 axis plot example](Assets/IP_Temp_pressure_VN_pressure.fig)
+![3D Plot example](Assets/3D_ip_temp_pressure_channelOD.png)
+![2D 2 axis plot example](Assets/IP_Temp_pressure_VN_pressure.png)
