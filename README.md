@@ -3,19 +3,15 @@ This is a matlab based analytical model using the Cantera toolbox which is emplo
 
 ## Overview
 The main files in this repo;
-'''
 - > Analytical_Model.m
 - > Analytical_Model_Plotter.m
-'''
 
 Other files that you might want to know about if you need to re-populate the datafile:
 > Output_data_combined_all.mat
-```
 - > Analytical_Model_Calculator.m
 - > matcombiner.m
     - This file combines two .mat files. I used this to combined a dataset collected on lower temperature detonation parameter collection, and another run on high temperature parameter collection (outputs from the 'Analytical_Model_Calculator.m' file.)
 - > Output_data_combined_all.mat
-```
 
 For the most part; stay away from all other files in this directory, most are referenced from one of the above four files to generate data, or plots. 
 
