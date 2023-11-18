@@ -77,7 +77,7 @@ function plot2D(src,xval,yval,yyvalueRight,Output_dataNames,Output,secondAx)
 
     if secondAx.Value == 1
         yyindexRight = find(contains(Output_dataNames(1,:),yyvalueRight.Value));
-        yyright=Output(:,yIndex);
+        yyright=Output(:,yyindexRight);
         xxval=Output(:,xIndex);
         addAxis2Plot(xxval,yyright);
         ylabel(yyvalueRight.Value)
@@ -96,7 +96,7 @@ function plot3D(src,xval,yval,zval,Output_dataNames,Output)
     xIndex = find(contains(Output_dataNames(1,:),xval.Value));
     yIndex = find(contains(Output_dataNames(1,:),yval.Value));
     zIndex = find(contains(Output_dataNames(1,:),zval.Value));
-shak 
+
     figure("Name","Analytical Model 3D Plot O/P")
     scatter3(Output(:,xIndex),Output(:,yIndex),Output(:,zIndex));
     title("Analytical Model O/P")
