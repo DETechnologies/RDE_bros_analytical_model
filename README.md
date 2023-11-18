@@ -10,12 +10,12 @@ The main files in this repo;
 
 Other files that you might want to know about if you need to re-populate the datafile:
 > Output_data_combined_all.mat
-'''
+```
 - > Analytical_Model_Calculator.m
 - > matcombiner.m
     - This file combines two .mat files. I used this to combined a dataset collected on lower temperature detonation parameter collection, and another run on high temperature parameter collection (outputs from the 'Analytical_Model_Calculator.m' file.)
 - > Output_data_combined_all.mat
-'''
+```
 
 For the most part; stay away from all other files in this directory, most are referenced from one of the above four files to generate data, or plots. 
 
@@ -23,11 +23,11 @@ For the most part; stay away from all other files in this directory, most are re
 
 1. Use the 'Analytical_Model_Calculator.m' to populate the Output_data.mat file with the range of parameters you select. This will be done automatically. The only input you need to provide is the range and fidelity of the data to be collected. One of the first few lines in this script is the following; 
 
-'''
+```
 Pressure_range=[(0.101325e+6)/2,2.533e+6,(0.101e+6)\]; % low,high,step size % in pascals ~(range 1.5 atm to 25 atm, step 1/2 atm)
 Temp_range=[173.15,373.15,10\]; % low,high,step size % in Kelvin
 eqv_ratio_range=[0.75,1.15,0.05\];  % low,high,step size %no units
-'''
+```
 
 For ease of use; we have a dataset already generated called 'Output_data_combined_all.mat' which has pretty good resolution data across a decently wide range.
 
