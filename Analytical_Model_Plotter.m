@@ -21,7 +21,7 @@ xval=uidropdown(f1,"Items",[Output_dataNames(1,:)]);
 
 yval=uidropdown(f1,"Items",[Output_dataNames(1,:)]);
 
-zval=uidropdown(f1,"Items",[Output_dataNames(1,:)]);
+zval=uidropdown(f1,"Items",[Output_dataNames(1,:)]);    
 
 b=uibutton(f1,"Text","Plot","ButtonPushedFcn",@(src,event) plot3D(src,xval,yval,zval,Output_dataNames,Output));
 b.Layout.Row = 2;
