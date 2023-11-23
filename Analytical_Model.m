@@ -18,7 +18,7 @@ clear
 clc
 disp('Analytical_Model')
 
-P1 = 7.5766e+5; % [Pa]
+P1 = 506625000; % [Pa]
 T1 =213.15;% [K]
 eq=1;
 mech = 'h2o2.yaml'; %%yaml files come from here: C:\Program Files\Cantera\data

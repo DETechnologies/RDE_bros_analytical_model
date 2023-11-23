@@ -3,7 +3,9 @@ close all force
 clear 
 clc
 
-load("Output_data_combined_all.mat")
+% load("Output_data_combined_all.mat")
+load("Output_data_varyEqvRatio.mat")
+load('Output_data_varyinputTemp.mat')
 
 %% validate that the data is prepared the right way
 o=size(Output);
@@ -43,22 +45,6 @@ yval2=uidropdown(f2,"Items",[Output_dataNames(1,:)]);
 b=uibutton(f2,"Text","Plot","ButtonPushedFcn",@(src,event) plot2D(src,xval,yval,yval2,Output_dataNames,Output,cb));
 b.Layout.Row = 3;
 b.Layout.Column = 2;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

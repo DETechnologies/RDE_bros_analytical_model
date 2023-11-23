@@ -7,9 +7,9 @@ clc
 close all
 disp('Analytical Model Calculator')
 
-Pressure_range=[101.325e+6,101.325e+6,1]; % low,high,step size % in pascals (range 0.5 atm to 25 atm, step 1/2 atm)
-Temp_range=[313.15,373.15,1]; % low,high,step size % in Kelvin
-eqv_ratio_range=[0.6,1.5,0.1];  % low,high,step size %no units
+Pressure_range=[506.625e+3,506.625e+3,1]; % low,high,step size % in pascals (range 0.5 atm to 25 atm, step 1/2 atm)
+Temp_range=[273.15,313.15,1]; % low,high,step size % in Kelvin
+eqv_ratio_range=[0.1,10,0.01];  % low,high,step size %no units
 
 % % Pressure_range=[7.5766e+5,2.533e+6,(0.101e+6)]; % low,high,step size % in pascals (range 1.5 atm to 25 atm, step 1/2 atm)
 % Pressure_range=[2.3737e+6,2.533e+6,(0.101e+6)]; % low,high,step size % in pascals (range 1.5 atm to 25 atm, step 1/2 atm)
@@ -87,8 +87,8 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
 %             RResults=Rocket_Impulse(t,p,FAR,mech);
 %             eq_Isp=RResults(8);
 %             m_dot_eq=Thrust/(eq_Isp*g);
-            eq_Isp="None";
-            m_dot_eq="None";
+            eq_Isp=0;
+            m_dot_eq=0;
             
             %geometry defns
             Minimum_Channel_OD=40*cell_gav;
@@ -104,7 +104,7 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
 
             sz=size(Output);
             fprintf('\n \nlooptime: %d, loop number: %d of %d',toc,n,total_loops)
-            save('Output_data_forPrettyPlots.mat','Output',"Output_dataNames") %% saves the file as .mat file for later accessing saving here incase it errors out, overwrite each loop
+            save('Output_data_varyinputTemp.mat','Output',"Output_dataNames") %% saves the file as .mat file for later accessing saving here incase it errors out, overwrite each loop
         end 
     end
 end
