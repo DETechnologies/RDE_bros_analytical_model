@@ -15,6 +15,7 @@ P2 = pressure(gas);
 R2 = density(gas);
 V2 = 1/R2;
 S2 = entropy_mass(gas);
+H2 = enthaply_mass(gas);
 w2 = density(gas1)*cj_speed/R2;
 u2 = cj_speed - w2;
 x2 = moleFractions(gas);
@@ -27,11 +28,12 @@ Results([3]) = T2;
 Results([4]) = R2;
 Results([5]) = V2;
 Results([6]) = S2;
-Results([7]) = w2;
-Results([8]) = u2;
-%Results([9]) = x2;
-Results([10]) = c2_eq;
-Results([11]) = gamma2_eq;
+Results([7]) = H2;
+Results([8]) = w2;
+Results([9]) = u2;
+%Results([10]) = x2;
+Results([11]) = c2_eq;
+Results([12]) = gamma2_eq;
 
 %% Print out
 disp([' '])
