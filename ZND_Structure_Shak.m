@@ -1,7 +1,8 @@
 %% Function Definition
 function Results = ZND_Structure_Shak(P1, T1, q, mech, gas1)
 %% SET SHOCK SPEED
-[cj_speed, curve, ~, dnew, plot_data] = CJspeed(P1, T1, q, mech);
+%[cj_speed, curve, ~, dnew, plot_data] = CJspeed(P1, T1, q, mech);
+[cj_speed] = CJspeed(P1, T1, q, mech);
 % CJspeed_plot(2,plot_data,curve,dnew)
 
 %%
@@ -74,7 +75,7 @@ b = length(out.T);
 
 %%  Generate Results Array
 
-Results = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+Results = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 Results([1]) = Ts;
 Results([2]) = Ps;
@@ -98,7 +99,7 @@ Results([19]) = max_thermicity_width_ZND;
 Results([20]) = chi_ng;
 Results([21]) = cell_ng;
 Results([22]) = cell_gav;
-
+Results([23]) = out.exo_time_ZND;
 
 %% Display Results
 

@@ -75,12 +75,11 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
             cell_gav=ZNDResults(22);
             cell_ng=ZNDResults(21);
             
-            %this is rocket impulse things (WRONG)
-%             RResults=Rocket_Impulse(t,p,FAR,mech);
-%             eq_Isp=RResults(8);
-%             m_dot_eq=Thrust/(eq_Isp*g);
-            eq_Isp=0;
-            m_dot_eq=0;
+            % Mass flow rate calcs
+            Fill_Height = (12+5)*Detonation_Structure(1,22); %This is the max critical fill height case
+            Minimum_Channel_ID = (Minimum_Channel_OD - Minimum_Channel_Width)*1000;
+            Fill_Volume = 0.25*pi*(((Minimum_Channel_OD*1000).^2)-(Minimum_Channel_ID.^2))*Fill_Height;
+            m_dot_tot = (CJ_Point(1,4)*Fill_Volume*pi*Minimum_Channel_OD)/(CJ_Point(1,1));
             
             %geometry defns
             Minimum_Channel_OD=40*cell_gav;
