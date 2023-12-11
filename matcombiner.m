@@ -1,6 +1,7 @@
-wrm=load('Output_data_combined_warm.mat');
-cold=load('Output_data_combined_cold.mat');
+pt1=load('Output_data_dec10.mat');
+pt2=load('Output_data_dec10_pt2.mat');
+pt3=load('Output_data_dec10.mat');
 
-Output=[cold.Output;wrm.Output];
-Output_dataNames=wrm.Output_dataNames;
-save('Output_data_combined_all.mat','Output',"Output_dataNames")
+Output=[pt1.Output;pt2.Output;pt3.Output];
+Output_dataNames=pt1.Output_dataNames;
+save('Output_data_dec10_combined.mat','Output',"Output_dataNames")
