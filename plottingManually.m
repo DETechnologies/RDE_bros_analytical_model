@@ -23,6 +23,18 @@ load("Output_data_varyEqvRatio.mat")
 % ylabel(Output_dataNames(1,[7,9]))
 % legend(Output_dataNames(1,[7,9]))
 
+%% CJspeed and speed of sound in that gas
+figure("Name","CJ speed and Speed of Sound @P0=5atm, T0=313.15K")
+grid on
+hold on
+scatter(Output(:,3),Output(:,[5,6]));
+
+xlabel(Output_dataNames(1,3))
+ylabel(Output_dataNames(1,[5,6]))
+legend(Output_dataNames(1,[5,6]))
+
+
+
 %% outrage
 % figure("Name","something outrageous @ P0=5atm, T0=313.15K")
 % grid on

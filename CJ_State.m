@@ -34,29 +34,29 @@ Results([7]) = H2;
 Results([8]) = w2;
 Results([9]) = u2;
 %Results([10]) = x2;
-Results([11]) = c2_eq;
-Results([12]) = c2_fr;
+Results([11]) = c2_eq; %(speed of sound of the product mixture)
+Results([12]) = c2_fr; %(speed of sound of the product mixture)
 Results([13]) = gamma2_fr;
 Results([14]) = gamma2_eq;
 
-%% Print out
-disp([' '])
-disp(['................................................................']);
-disp( 'CJ Point Properties');
-
-disp([' '])
-disp(['   CJ speed: ',num2str(cj_speed),' (m/s)']);
-disp(['   Pressure: ',num2str(P2),' (Pa)']);
-disp(['   Temperature: ',num2str(T2),' (K)']);
-disp(['   Density: ',num2str(R2),' (kg/m3)']);
-%disp(['   Entropy: ',num2str(S2),' (J/kg-K)']);
-disp(['   Enthalpy: ',num2str(H2),' (kJ)']);
-% disp(['   Mole Fractions: ',num2str(x2),' (mol/mol)']);
-%disp(['   w2 (wave frame): ',num2str(w2),' (m/s)']);
-disp(['   u2 (lab frame): ',num2str(u2),' (m/s)']);
-%disp(['   c2 (frozen): ',num2str(c2_fr),' (m/s)']);
-disp(['   c2 (equilibrium): ',num2str(c2_eq),' (m/s)']);
-%disp(['   gamma2 (frozen): ',num2str(gamma2_fr)]);
-disp(['   gamma2 (equilibrium): ',num2str(gamma2_eq)]);
+% %% Print out
+% disp([' '])
+% disp(['................................................................']);
+% disp( 'CJ Point Properties');
+% 
+% disp([' '])
+% disp(['   CJ speed: ',num2str(cj_speed),' (m/s)']);
+% disp(['   Pressure: ',num2str(P2),' (Pa)']);
+% disp(['   Temperature: ',num2str(T2),' (K)']);
+% disp(['   Density: ',num2str(R2),' (kg/m3)']);
+% %disp(['   Entropy: ',num2str(S2),' (J/kg-K)']);
+% disp(['   Enthalpy: ',num2str(H2),' (kJ)']);
+% % disp(['   Mole Fractions: ',num2str(x2),' (mol/mol)']);
+% %disp(['   w2 (wave frame): ',num2str(w2),' (m/s)']);
+% % disp(['   u2 (lab frame): ',num2str(u2),' (m/s)']);
+% % disp(['   c2 (frozen) (speed of sound of the mixture): ',num2str(c2_fr),' (m/s)']);
+% % disp(['   c2 (equilibrium) (speed of sound of the mixture): ',num2str(c2_eq),' (m/s)']);
+% %disp(['   gamma2 (frozen): ',num2str(gamma2_fr)]);
+% disp(['   gamma2 (equilibrium): ',num2str(gamma2_eq)]);
 
 end

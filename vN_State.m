@@ -15,7 +15,7 @@ P2 = pressure(gas);
 R2 = density(gas);
 V2 = 1/R2;
 S2 = entropy_mass(gas);
-w2 = density(gas1)*Us/R2;
+w2 = density(gas1)*cj_speed/R2;
 u2 = Us - w2;
 x2 = moleFractions(gas);
 c2_fr = soundspeed_fr(gas);
@@ -46,8 +46,8 @@ disp(['   Density: ',num2str(R2),' (kg/m3)']);
 %disp(['   Entropy: ',num2str(S2),' (J/kg-K)']);
 disp(['   Mole Fractions: H2:',num2str(x2(1,1)),' & O2:',num2str(x2(4,1)), '(mol/mol)']);
 %disp(['   w2 (wave frame): ',num2str(w2),' (m/s)']);
-disp(['   u2 (lab frame): ',num2str(u2),' (m/s)']);
-disp(['   c2 (frozen): ',num2str(c2_fr),' (m/s)']);
+% disp(['   u2 (lab frame): ',num2str(u2),' (m/s)']);
+% disp(['   c2 (frozen): ',num2str(c2_fr),' (m/s)']);
 disp(['   gamma2 (frozen): ',num2str(gamma2_fr),' ']);
 
 end

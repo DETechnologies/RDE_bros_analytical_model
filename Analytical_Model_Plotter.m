@@ -3,9 +3,7 @@ close all force
 clear 
 clc
 
-% load("Output_data_combined_all.mat")
-load("Output_data_varyEqvRatio.mat")
-load('Output_data_varyinputTemp.mat')
+load("Output_data_dec10_POC.mat")
 
 %% validate that the data is prepared the right way
 o=size(Output);
