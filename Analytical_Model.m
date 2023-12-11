@@ -18,9 +18,9 @@ clear
 clc
 disp('Analytical_Model')
 
-P1 = 1013250; % [Pa]
-T1 = 309;% [K]
-eq=0.95;
+P1 = 506625; % [Pa]
+T1 = 300;% [K]
+eq=0.85;
 mech = 'h2o2.yaml'; %%yaml files come from here: C:\Program Files\Cantera\data
 gas1 = Solution(mech);
 eq=InitialState(T1,P1,eq,gas1); %%this calculates the mol ratio of hydrogen to oxygen
@@ -134,7 +134,7 @@ disp(['Mass Flow'])
 
 disp([' '])
 disp(['Fill Height: ', num2str(Fill_Height),' (m)']);
-disp(['Fill Area: ', num2str(Fill_Volume),' (m^2)']);
+disp(['Fill Vol: ', num2str(Fill_Volume),' (m^3)']);
 disp(['m_dot Total OUT of the engine (for thrust calc): ', num2str(m_dot_tot_exit),' (kg/s)']);
 disp(['m_dot Total INTO the engine (for validation): ', num2str(m_dot_intoengine),' (kg/s)']);
 

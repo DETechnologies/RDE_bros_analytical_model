@@ -7,6 +7,11 @@ disp('Analytical Model Calculator')
 Pressure_range=[1114.575e+3,6.08e+6,101.325e+3]; % low,high,step size % in pascals (range 5 atm to 25 atm (500psi))
 Temp_range=[300,320,1]; % low,high,step size % in Kelvin
 eqv_ratio_range=[1,1.25,0.1];  % low,high,step size %no units
+
+Pressure_range=[506.625e+3,6.08e+6,101.325e+3]; % low,high,step size % in pascals (range 5 atm to 25 atm (500psi))
+Temp_range=[300,320,1]; % low,high,step size % in Kelvin
+eqv_ratio_range=[0.85,1.25,0.1];  % low,high,step size %no units
+
 P_a = 101325;
 
 mech = 'h2o2.yaml'; %%yaml files come from here: C:\Program Files\Cantera\data
@@ -82,10 +87,10 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
             cell_ng=ZNDResults(21);
             
             %geometry defns
-            Minimum_Channel_OD=40*cell_gav;
-            Minimum_Channel_Width=2.4*cell_gav;
+            Minimum_Channel_OD=40*cell_gav*1000;
+            Minimum_Channel_Width=2.4*cell_gav*1000;
             Minimum_Channel_ID = (Minimum_Channel_OD - Minimum_Channel_Width);
-            Minimum_Chamber_Length=24*cell_gav;
+            Minimum_Chamber_Length=24*cell_gav*1000;
 
             %geometry big red 
             big_red_minimumFillHeight=(12+5)*cell_gav*1000;
@@ -133,7 +138,7 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
 
             sz=size(Output);
             fprintf('\n \nlooptime: %d, loop number: %d of %d',toc,n,total_loops)
-            save('Output_data_dec10_pt3','Output',"Output_dataNames") %% saves the file as .mat file for later accessing saving here incase it errors out, overwrite each loop
+            save('Output_data_dec10_new','Output',"Output_dataNames") %% saves the file as .mat file for later accessing saving here incase it errors out, overwrite each loop
         end 
     end
 end
