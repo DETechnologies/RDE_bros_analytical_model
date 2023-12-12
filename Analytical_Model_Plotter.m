@@ -3,7 +3,7 @@ close all force
 clear 
 clc
 
-load("Output_data_dec10_combined.mat")
+load("Output_data_dec10_new.mat")
 
 %% validate that the data is prepared the right way
 o=size(Output);
