@@ -39,13 +39,13 @@ Results([12]) = c2_fr; %(speed of sound of the product mixture)
 Results([13]) = gamma2_fr;
 Results([14]) = gamma2_eq;
 
-% %% Print out
+% % %% Print out
 % disp([' '])
 % disp(['................................................................']);
 % disp( 'CJ Point Properties');
-% 
-% disp([' '])
-% disp(['   CJ speed: ',num2str(cj_speed),' (m/s)']);
+% % 
+% % disp([' '])
+% % disp(['   CJ speed: ',num2str(cj_speed),' (m/s)']);
 % disp(['   Pressure: ',num2str(P2),' (Pa)']);
 % disp(['   Temperature: ',num2str(T2),' (K)']);
 % disp(['   Density: ',num2str(R2),' (kg/m3)']);
