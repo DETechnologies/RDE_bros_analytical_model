@@ -4,9 +4,9 @@ clc
 close all all force
 disp('Analytical Model Calculator')
 
-Pressure_range=[1000e+3,1000e+3,10e+3]; % low,high,step size % in pascals (range 5 atm to 25 atm (500psi))
-Temp_range=[290,290,1]; % low,high,step size % in Kelvin
-eqv_ratio_range=[0.1,10,0.05];  % low,high,step size %no units
+Pressure_range=[1000e+3,1000e+3,1e+3]; % low,high,step size % in pascals (range 5 atm to 25 atm (500psi))
+Temp_range=[300,300,1]; % low,high,step size % in Kelvin
+eqv_ratio_range=[0.945,10,0.005];  % low,high,step size %no units
 
 P_a = 101325;
 
@@ -134,7 +134,7 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
 
             sz=size(Output);
             fprintf('\n \nlooptime: %d, loop number: %d of %d',toc,n,total_loops)
-            save('Output_data_dec17_veqvR','Output',"Output_dataNames") %% saves the file as .mat file for later accessing saving here incase it errors out, overwrite each loop
+            save('Output_data_dec22_veqvR_pt2','Output',"Output_dataNames") %% saves the file as .mat file for later accessing saving here incase it errors out, overwrite each loop
         end 
     end
 end

@@ -5,7 +5,8 @@ clc
 
 % load("Output_data_dec11_V2.mat")
 % load("Output_data_dec11_new_all.mat")
-load("Output_data_dec14_veqv.mat");
+% load("Output_data_dec14_veqv.mat");
+load('noDelete_mat\Output_data_dec22_veqvR.mat')
 
 %% validate that the data is prepared the right way
 o=size(Output);
@@ -56,6 +57,8 @@ function plot2D(src,xval,yval,yyvalueRight,Output_dataNames,Output,secondAx)
 
     figure("Name","Analytical Model 2D Plot O/P")
     scatter(Output(:,xIndex),Output(:,yIndex));
+%     loglog(Output(:,xIndex),Output(:,yIndex));
+
     title("Analytical Model O/P")
 
     xlabel(xval.Value)

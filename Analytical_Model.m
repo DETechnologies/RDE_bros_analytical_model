@@ -18,9 +18,9 @@ clear
 clc
 disp('Analytical_Model')
 
-P1 = 2000e+3; % [Pa]
+P1 = 0.1e+6; % [Pa]
 T1 = 300;% [K]
-eq=1;
+eq=1.1;
 mech = 'h2o2.yaml'; %%yaml files come from here: C:\Program Files\Cantera\data
 gas1 = Solution(mech);
 eq=InitialState(T1,P1,eq,gas1); %%this calculates the mol ratio of hydrogen to oxygen
@@ -155,7 +155,7 @@ P_a = 101325;
 % q_HEX = ((0.5*285830)/2.01568)*1000; % [J/kg]
 q_h = (241820/18.01528)*1000; % [J/kg] same method as used in hugoniot spread sheet, *1000 is for g->kg conversion
 
-T_t = 2000; % [N]
+T_t = 1350; % [N]
 
 % Term_1a = q_HEX/(cp1*T1);
 % Term_2a = (CJ_Point(1,2)/P1).^((CJ_Point(1,14)-1)/CJ_Point(1,14));
