@@ -4,9 +4,9 @@ clc
 close all all force
 disp('Analytical Model Calculator')
 
-Pressure_range=[1000e+3,1000e+3,1e+3]; % low,high,step size % in pascals (range 5 atm to 25 atm (500psi))
+Pressure_range=[50E+3,1000e+3,5e+3]; % low,high,step size % in pascals (range 5 atm to 25 atm (500psi))
 Temp_range=[300,300,1]; % low,high,step size % in Kelvin
-eqv_ratio_range=[0.945,10,0.005];  % low,high,step size %no units
+eqv_ratio_range=[1,1,1];  % low,high,step size %no units
 
 P_a = 101325;
 
@@ -85,7 +85,7 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
             %geometry defns
             Minimum_Channel_OD=40*cell_gav*1000;
             Minimum_Channel_Width=2.4*cell_gav*1000;
-            Minimum_Channel_ID = (Minimum_Channel_OD - Minimum_Channel_Width);
+            Minimum_Channel_ID = (Minimum_Channel_OD - 2*Minimum_Channel_Width);
             Minimum_Chamber_Length=24*cell_gav*1000;
 
             %geometry big red 
@@ -134,7 +134,7 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
 
             sz=size(Output);
             fprintf('\n \nlooptime: %d, loop number: %d of %d',toc,n,total_loops)
-            save('Output_data_dec22_veqvR_pt2','Output',"Output_dataNames") %% saves the file as .mat file for later accessing saving here incase it errors out, overwrite each loop
+            save('Output_data_feb19_varyPressure','Output',"Output_dataNames") %% saves the file as .mat file for later accessing saving here incase it errors out, overwrite each loop
         end 
     end
 end

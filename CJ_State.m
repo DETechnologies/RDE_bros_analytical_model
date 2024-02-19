@@ -8,7 +8,7 @@ function Results = CJ_State(P1, T1, q, mech, gas1)
 [gas] = PostShock_eq(cj_speed,P1, T1, q, mech);
 
 %% Evaluate downstream properties of gas object 
-Results = [0,0,0,0,0,0,0,0,0,0,0,0,0];
+Results = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 T2 = temperature(gas);
 P2 = pressure(gas);
@@ -23,6 +23,7 @@ c2_eq = soundspeed_eq(gas);
 c2_fr = soundspeed_fr(gas);
 gamma2_fr = c2_fr*c2_fr*R2/P2;
 gamma2_eq = c2_eq*c2_eq*R2/P2;
+MCJ = cj_speed/c2_eq;
 
 Results([1]) = cj_speed;
 Results([2]) = P2;
@@ -38,6 +39,7 @@ Results([11]) = c2_eq; %(speed of sound of the product mixture)
 Results([12]) = c2_fr; %(speed of sound of the product mixture)
 Results([13]) = gamma2_fr;
 Results([14]) = gamma2_eq;
+Results([15]) = MCJ;
 
 % %% Print out
 disp([' '])
@@ -45,18 +47,18 @@ disp(['................................................................']);
 disp( 'CJ Point Properties');
 % 
 % disp([' '])
-% disp(['   CJ speed: ',num2str(cj_speed),' (m/s)']);
+disp(['   CJ speed: ',num2str(cj_speed),' (m/s)']);
 disp(['   Pressure: ',num2str(P2),' (Pa)']);
 disp(['   Temperature: ',num2str(T2),' (K)']);
 disp(['   Density: ',num2str(R2),' (kg/m3)']);
 %disp(['   Entropy: ',num2str(S2),' (J/kg-K)']);
-disp(['   Enthalpy: ',num2str(H2),' (kJ)']);
-% disp(['   Mole Fractions: ',num2str(x2),' (mol/mol)']);
-%disp(['   w2 (wave frame): ',num2str(w2),' (m/s)']);
+disp(['   Enthalpy: ',num2str(H2),' (J)']);
+disp(['   Mole Fractions: H2:',num2str(x2(1,1)),' & O2:',num2str(x2(4,1)), '(mol/mol)'])
+% disp(['   w2 (wave frame): ',num2str(w2),' (m/s)']);
 % disp(['   u2 (lab frame): ',num2str(u2),' (m/s)']);
 % disp(['   c2 (frozen) (speed of sound of the mixture): ',num2str(c2_fr),' (m/s)']);
-% disp(['   c2 (equilibrium) (speed of sound of the mixture): ',num2str(c2_eq),' (m/s)']);
-%disp(['   gamma2 (frozen): ',num2str(gamma2_fr)]);
+disp(['   c2 (equilibrium) (speed of sound for mixture): ',num2str(c2_eq),' (m/s)']);
+% disp(['   gamma2 (frozen): ',num2str(gamma2_fr)]);
 disp(['   gamma2 (equilibrium): ',num2str(gamma2_eq)]);
 
 end
