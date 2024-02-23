@@ -4,9 +4,9 @@ clc
 close all all force
 disp('Analytical Model Calculator')
 
-Pressure_range=[50E+3,1000e+3,5e+3]; % low,high,step size % in pascals (range 5 atm to 25 atm (500psi))
-Temp_range=[300,300,1]; % low,high,step size % in Kelvin
-eqv_ratio_range=[1,1,1];  % low,high,step size %no units
+Pressure_range=[5,2*101.325e+3,1e+3]; % low,high,step size % in pascals (range 5 atm to 25 atm (500psi))
+Temp_range=[293,293,1]; % low,high,step size % in Kelvin
+eqv_ratio_range=[1,1,0.05];  % low,high,step size %no units
 
 P_a = 101325;
 
@@ -21,7 +21,7 @@ t_steps=(Temp_range(1,2)-Temp_range(1,1))/Temp_range(1,3)+1;
 eqv_steps=(eqv_ratio_range(1,2)-eqv_ratio_range(1,1))/eqv_ratio_range(1,3)+1;
 
 total_loops=p_steps*t_steps*eqv_steps;
-time_est=(total_loops*10)/60; %takes ~5s per loop
+time_est=(total_loops*10)/60; %takes ~10s per loop
 
 fprintf("%d Number of Loops, Estimated ~ %d mins to complete",total_loops,time_est)
 fprintf('\n')
@@ -41,7 +41,7 @@ Output_dataNames=["I/P Pressure [Pa]","I/P Temperature [K]","Eqv Ratio","I/P Den
                     "big_red_minimumFillHeight [mm]", "big_red_minD [mm]", "big_red_min_delta [mm]", "big_red_minLength [mm]", "Fill_Height [m]",...
                     "Fill_Volume [m^3]", "m_dot_tot_exit [kg/s]", "m_dot [kg/s]", "T_e [N]",...
                     "Tsp_e [N/kg/s]", "Thrust_altmdot [N]", "Tspe_altmdot [N/kg/s]"...
-                    "ISP_e [s]", "ISP_alt_mdot [s]"];
+                    "ISP_e [s]", "ISP_alt_mdot [s]","Sean CB Cell Size","sean wave number","sean fill time"];
 sz=0;%initializes the size fcn, so it doesnt error out
 
 %% Data Aq. Loop
@@ -81,7 +81,7 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
             max_thermicity_width_ZND=ZNDResults(19);
             cell_gav=ZNDResults(22);
             cell_ng=ZNDResults(21);
-            
+                        
             %geometry defns
             Minimum_Channel_OD=40*cell_gav*1000;
             Minimum_Channel_Width=2.4*cell_gav*1000;
@@ -121,6 +121,15 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
             %spec impulse
             Isp_e=T_e/(m_dot_intoengine*9.81);
             ISP_altmdot = T_e/(m_dot_tot_exit*9.81);
+
+            %sean CB stuff
+            cell_sean = (1.6*101325)/p;
+            R_sp = 8.314462618;
+            Cl=12; % this is the 12+-5 thing
+            m_dot_P_history = Fill_Height*(Minimum_Channel_Width/1000)*CJ_density*CJ_spd; %density of combustion products, and cj speed % [J. Shepherd, J. Kasahara]
+            Wave_Number_Sean = (m_dot_P_history*R_sp*T1)/(Cl*0.0016*101325*CJ_spd*Fill_Height);
+            Mean_Channel_Diam=Minimum_Channel_OD-Minimum_Channel_Width/2;
+            Fill_Time_Sean = (pi*(Mean_Channel_Diam))/(CJ_spd*Wave_Number_Sean);
             
             %this is where all the data gets stored each iteration
             Output(sz(1,1)+1,:)=[p,t,e,density(gas_i),spd_sound_gas,CJ_spd,VN_pressure,...
@@ -130,11 +139,11 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
                                 Minimum_Channel_OD,Minimum_Channel_Width,Minimum_Chamber_Length...
                                 big_red_minimumFillHeight,big_red_minD,big_red_min_delta,big_red_minLength...
                                 Fill_Height,Fill_Volume,m_dot_tot_exit,m_dot_intoengine...
-                                T_e,Tsp_e,Thrust_altmdot,Tspe_altmdot,Isp_e,ISP_altmdot];
+                                T_e,Tsp_e,Thrust_altmdot,Tspe_altmdot,Isp_e,ISP_altmdot,cell_sean,Wave_Number_Sean,Fill_Time_Sean];
 
             sz=size(Output);
             fprintf('\n \nlooptime: %d, loop number: %d of %d',toc,n,total_loops)
-            save('Output_data_feb19_varyPressure','Output',"Output_dataNames") %% saves the file as .mat file for later accessing saving here incase it errors out, overwrite each loop
+            save('noDelete_mat\OutputVpressure_try2_yesSean','Output',"Output_dataNames") %% saves the file as .mat file for later accessing saving here incase it errors out, overwrite each loop
         end 
     end
 end

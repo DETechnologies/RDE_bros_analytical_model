@@ -18,15 +18,13 @@ clear
 clc
 disp('Analytical_Model')
 
-P1 = 10000; % [Pa]
-T1 = 293;% [K]
-eq=1.0;
+P1 = 104000; % [Pa]
+T1 = 300;% [K]
+eq = 1.0;
 mech = 'Burke2012.yaml';
 % mech = 'Hong2011.yaml';
 % mech = 'sandiego20161214_H2only.yaml'; % this is fucked
 
-% New mechanism files on SDToolbox site, Burke2012 most recent one created.
-% Need to review all three papers, discuss what they do/whats new and conclude why to pick one vs the rest. 
 gas1 = Solution(mech);
 eq=InitialState(T1,P1,eq,gas1); %%this calculates the mol ratio of hydrogen to oxygen
 FAR = sprintf('H2:%d O2:%d',eq(1,1),eq(2,1));
@@ -70,6 +68,8 @@ CJ_Point = CJ_State(P1, T1, FAR, mech, gas1);
 %% Calculating ZND Detonation Structure
 Detonation_Structure = ZND_Structure_Shak(P1, T1, FAR, mech, gas1); %we only pull cell size from this
 
+cell_sean = (1.6*101325)/P1;
+disp(['Cell Size (Sean): ', num2str(cell_sean),' (mm)']);
 %% Geometry Definition
 % Equations taken from: 
 % - "Detonation cell size of liquid hypergolic propellants: Estimation from a non-premixed combustor [Anil P. Nair,
@@ -78,10 +78,10 @@ Detonation_Structure = ZND_Structure_Shak(P1, T1, FAR, mech, gas1); %we only pul
 % Ian J Shaw et al.
 
 % Dimension are in millimeters, geometry calcs from hypergolic report
-cell_gav=Detonation_Structure(1,22);
-Minimum_Channel_OD = 40*cell_gav*1000;
-Minimum_Channel_Width = 2.4*cell_gav*1000;
-Minimum_Chamber_Length = 24*cell_gav*1000;
+cell_west = 29*Detonation_Structure(1,18);
+Minimum_Channel_OD = 40*cell_west*1000;
+Minimum_Channel_Width = 3*cell_west*1000;
+Minimum_Chamber_Length = 24*cell_west*1000;
 Minimum_Channel_ID = (Minimum_Channel_OD - 2*Minimum_Channel_Width);
 
 disp([' '])
@@ -96,20 +96,20 @@ disp(['Minimum Channel Width (delta): ', num2str(Minimum_Channel_Width),' (mm)']
 disp(['Minimum Channel Length (L): ', num2str(Minimum_Chamber_Length),' (mm)']);
 % disp(['TFinal (ZND): ', num2str(Detonation_Structure(1,14)),' (K)']);
 
-% Using geometry calcs from big red
-% Ian J Shaw et al., “A Theoretical Review of Rotating Detonation Engines”, doi: 10.5772.
-big_red_minimumFillHeight=(12-5)*cell_gav*1000;
-big_red_minD=28*cell_gav*1000;
-big_red_min_delta=0.2*big_red_minimumFillHeight;
-big_red_minLength=2*big_red_minimumFillHeight;
-disp([' '])
-% disp(['................................................................']);
-disp([' '])
-disp(['Geometry Per Big Red Rules of Thumb'])
-disp(['Minimum Fill height: ', num2str(big_red_minimumFillHeight),' (mm)'])
-disp(['Minimum Diameter: ', num2str(big_red_minD),' (mm)'])
-disp(['Minimum Delta: ', num2str(big_red_min_delta),' (mm)'])
-disp(['Minimum Length: ', num2str(big_red_minLength),' (mm)'])
+% % Using geometry calcs from big red
+% % Ian J Shaw et al., “A Theoretical Review of Rotating Detonation Engines”, doi: 10.5772.
+% big_red_minimumFillHeight=(12-5)*cell_west*1000;
+% big_red_minD=28*cell_west*1000;
+% big_red_min_delta=0.2*big_red_minimumFillHeight;
+% big_red_minLength=2*big_red_minimumFillHeight;
+% disp([' '])
+% % disp(['................................................................']);
+% disp([' '])
+% disp(['Geometry Per Big Red Rules of Thumb'])
+% disp(['Minimum Fill height: ', num2str(big_red_minimumFillHeight),' (mm)'])
+% disp(['Minimum Diameter: ', num2str(big_red_minD),' (mm)'])
+% disp(['Minimum Delta: ', num2str(big_red_min_delta),' (mm)'])
+% disp(['Minimum Length: ', num2str(big_red_minLength),' (mm)'])
 
 
 %% M_dot calculation
@@ -121,21 +121,20 @@ disp(['Minimum Length: ', num2str(big_red_minLength),' (mm)'])
 % - "Rotating Detonation Wave Stability" [Piotr Wolanski]
 % - "Analytical Models for the Thrust of a Rotating Detonation Engine" [J. Shepherd, J. Kasahara]
 
-Fill_Height = (12-5)*cell_gav; %This is the max critical fill height case
+Cl = 12;
+Fill_Height = (Cl)*cell_west; %This is the max critical fill height case
 
-% LOGAN HARD CODING GEOMETRY SELECTED TO GET MDOT
-Minimum_Channel_OD=55.11;
-Minimum_Channel_Width=4.70;
-Minimum_Channel_ID=Minimum_Channel_OD-2*Minimum_Channel_Width;
-
-% Fill_Height = (12)*cell_gav;
+% % LOGAN HARD CODING GEOMETRY SELECTED TO GET MDOT
+% Minimum_Channel_OD=55.11;
+% Minimum_Channel_Width=4.70;
+% Minimum_Channel_ID=Minimum_Channel_OD-2*Minimum_Channel_Width;
 
 Fill_Volume = 0.25*pi*(((Minimum_Channel_OD/1000).^2)-((Minimum_Channel_ID/1000).^2))*Fill_Height;
 
-m_dot_tot_exit = Fill_Height*(Minimum_Channel_Width/1000)*CJ_Point(1,4)*CJ_Point(1,1); %density of combustion products, and cj speed
-% [J. Shepherd, J. Kasahara]...can't find the equation anymore to verify the density and speed conditions
+m_dot_P_history = Fill_Height*(Minimum_Channel_Width/1000)*CJ_Point(1,4)*CJ_Point(1,1); %density of combustion products, and cj speed
+% [J. Shepherd, J. Kasahara]
 
-C=pi()*(Minimum_Channel_OD/1000);
+C = pi()*(Minimum_Channel_OD/1000);
 m_dot_intoengine=(Fill_Volume*R1*CJ_Point(1,1)/C); 
 
 m_dot_set = 0.32;
@@ -153,12 +152,18 @@ disp(['Mass Flow'])
 disp([' '])
 disp(['Fill Height: ', num2str(Fill_Height),' (m)']);
 disp(['Fill Vol: ', num2str(Fill_Volume),' (m^3)']);
-disp(['m_dot Total (Shepherd, Kasahara): ', num2str(m_dot_tot_exit),' (kg/s)']);
+disp(['m_dot Total (Shepherd, Kasahara): ', num2str(m_dot_P_history),' (kg/s)']);
 disp(['m_dot Total (Us): ', num2str(m_dot_intoengine),' (kg/s)']);
 
 %% Wave Number Calculation
+% Equations taken from:
+% - "Rotaing Detonation Wave Stability" [Piotr Wolanski]
+% - "Small-size rotating detonation engine: scaling and minimum mass flow
+% rate" [Sean Connolly-Boutin et al]
 
-Critical_Fill_Height = 7*Detonation_Structure(1,22);
+R_sp = 8.314462618;
+
+Critical_Fill_Height = Fill_Height;
 
 Minimum_Channel_ID = Minimum_Channel_OD - Minimum_Channel_Width;
 Mean_Channel_Diam = ((Minimum_Channel_OD - Minimum_Channel_ID)/2)+(Minimum_Channel_ID);
@@ -167,12 +172,14 @@ Critical_Fill_Volume = 0.25*pi*(((Minimum_Channel_OD/1000).^2) - ((Minimum_Chann
 
 Fill_Time = pi*(Mean_Channel_Diam/1000)/CJ_Point(1,1);
 
-Volumetric_Mixture_Supply = m_dot_tot_exit*CJ_Point(1,5);
+Volumetric_Mixture_Supply = m_dot_P_history*CJ_Point(1,5);
 t_mf = Critical_Fill_Volume/Volumetric_Mixture_Supply;
 
 Wave_Number = Fill_Time/t_mf;
 
+Wave_Number_Sean = (m_dot_P_history*R_sp*T1)/(Cl*0.0016*101325*CJ_Point(1,1)*Critical_Fill_Height);
 
+Fill_Time_Sean = (pi*(Mean_Channel_Diam))/(CJ_Point(1,1)*Wave_Number_Sean);
 
 disp([' '])
 disp(['................................................................']);
@@ -183,7 +190,11 @@ disp(['Critical Fill Height: ', num2str(Critical_Fill_Height),' (m)']);
 disp(['Critical Fill Volume: ', num2str(Critical_Fill_Volume),' (m^3)']);
 disp(['Fill Time: ', num2str(Fill_Time),' (s)']);
 disp(['Volumetric Mixture Supply: ', num2str(Volumetric_Mixture_Supply),' (m^3/s)']);
-disp(['Wave Number: ', num2str(Wave_Number),' ']);
+disp(['Wave Number (Wolanski): ', num2str(Wave_Number),' ']);
+disp([' '])
+disp(['Wave Number (Sean): ', num2str(Wave_Number_Sean),' ']);
+disp(['Fill Time (Sean): ', num2str(Fill_Time_Sean),' (s)']);
+
 
 %% Thrust Calculation (Check)
 % Equations taken from:
@@ -218,9 +229,9 @@ Term_1b = (q_h)/(cp1*T1);
 Term_2b = (P_a/P1).^((CJ_Point(1,14)-1)/CJ_Point(1,14));
 Term_3b = (P1/CJ_Point(1,2)).^((CJ_Point(1,14)-1)/CJ_Point(1,14));
 Term_4b = (CJ_Point(1,3)/T1);
-T_e = m_dot_tot_exit*(sqrt(2*cp1*T1))*(sqrt(1 + Term_1b - Term_2b * Term_3b * Term_4b));
+T_e = m_dot_P_history*(sqrt(2*cp1*T1))*(sqrt(1 + Term_1b - Term_2b * Term_3b * Term_4b));
 
-Tsp_e = T_e/m_dot_tot_exit;
+Tsp_e = T_e/m_dot_P_history;
 
 disp([' '])
 disp(['................................................................']);
@@ -236,13 +247,13 @@ disp(['Thrust (Expanded): ', num2str(T_e), ' (N)']);
 disp(['Specific Thrust (Expanded): ', num2str(Tsp_e), ' (N/kg/s)']);
 
 %% Isp Calculation
-%Equations taken from:
+% Equations taken from:
 % - "SDToolbox: Numerical Tools for Shock and Detonation Wave Modeling" 
 % [S. Kao, J. Ziegler, N. Bitter, B. Schmidt, J. Lawson, J. E. Shepherd]
 
 % Isp_ue = T_ue/(m_dot_tot*9.81);
 
-Isp_e = T_e/(m_dot_intoengine*9.81);
+Isp_e = T_e/(m_dot_P_history*9.81);
 
 disp([' '])
 disp(['................................................................']);
@@ -251,71 +262,24 @@ disp(['Specific Impulse'])
 disp([' '])
 % disp(['Isp (Under Expanded): ', num2str(Isp_ue),' (s)']);
 disp(['Isp (Expanded): ', num2str(Isp_e),' (s)']);
-disp(['Isp (test with mdot IN): ', num2str(T_e/(m_dot_intoengine*9.81)),' (s)']);
- %% Fill Parameters
-% % Equations taken from: 
-% % - "Detonation cell size of liquid hypergolic propellants: Estimation from a non-premixed combustor [Anil P. Nair,
-% % Alex R. Keller, Nicolas Q. Minesi, Daniel I. Pineda, R. Mitchell Spearrin]
-% % - "Rotaing Detonation Wave Stability" [Piotr Wolanski]
+disp(['Isp: ', num2str(T_e/(m_dot_P_history*9.81)),' (s)']);
+
+%% Critical Injector Area Calculation
+% Equations taken from:
+% - "Small-size rotating detonation engine: scaling and minimum mass flow
+% rate" [Sean Connolly-Boutin et al]
+
+% FINISH WHEN STAGNATION PARAMETRES CALCULATED FROM PIPING FANNO FLOW
+% ANALYSIS
+
+% P_o = ;
+% T_o = ;
 % 
-% Fill_Parameters = [];
-% fillParameters=[];
-% sz=0;
-% 
-% cellsize_multiple=linspace(7,17,11); % increase the third number to get finer data resolution.
-% for i = cellsize_multiple
-%     %%%%%%% @shak i changed the way you were adding data to the
-%     %%%%%%% Fill_Parameters variable so they were divided by column; I know
-%     %%%%%%% what you were going for but you accidentally had them being
-%     %%%%%%% added to funky places
-%     sz=size(fillParameters);
-%     % Fill  Height (in m)
-%     Critical_Fill_Height = i*Detonation_Structure(1,22);
-% %     Fill_Parameters(end+1) = Critical_Fill_Height;
-%     
-%     % Fill Volume (in  m^3)
-%     Minimum_Channel_ID = Minimum_Channel_OD - Minimum_Channel_Width;
-%     Mean_Channel_Diam = ((Minimum_Channel_OD - Minimum_Channel_ID)/2)+(Minimum_Channel_ID);
-%     
-%     Critical_Fill_Volume = 0.25*pi*(((Minimum_Channel_OD/1000).^2) - ((Minimum_Channel_ID/1000).^2))*Critical_Fill_Height;
-% %     Fill_Parameters(end+1) = Critical_Fill_Volume;
-%     
-%     % Fill Time (in s)
-%     Fill_Time = pi*(Mean_Channel_Diam/1000)/CJ_Point(1,1);
-% %     Fill_Parameters(end+1) = Fill_Time;
-%     
-%     % Detonation Wave Number
-%     Volumetric_Mixture_Supply = m_dot_eq*CJ_Point(1,5);
-%     t_mf = Critical_Fill_Volume/Volumetric_Mixture_Supply;
-%     
-%     Wave_Number = Fill_Time/t_mf;
-% %     Fill_Parameters(end+1) = Wave_Number;
-%     
-%     fillParameters(sz(1,1)+1,:)=[Critical_Fill_Height,Critical_Fill_Volume,Fill_Time,Wave_Number]; %add data to new fill parameters variable once per iteration before the variables get cleared next iteration.
-% 
-% end
-% 
-% % Fill_Parameters = reshape(Fill_Parameters,[11,4]);
-% % [row,col] = find(Fill_Parameters==max(Fill_Parameters));
+% A_star = m_dot_P_history/((SQRT()*P_o)/(SQRT(R_sp)*T-o);
 % 
 % disp([' '])
 % disp(['................................................................']);
-% disp("Fill parameters")
-% % disp(Fill_Parameters)
-% disp(['Based on Cell Size ', num2str(Detonation_Structure(1,22)),' (mm)']);
-% % disp(fillParameters)
+% disp(['Critical Injector Area'])
 % 
-% figure("Name","Critical Params Based on Cell Size Multiple")
-% scatter(cellsize_multiple,fillParameters(:,1),DisplayName="Critical Fill Height [m]")
-% hold on
-% scatter(cellsize_multiple,fillParameters(:,2),DisplayName="Critical Fill Volume [m^3??]")
-% scatter(cellsize_multiple,fillParameters(:,3),DisplayName="Fill Time [s]")
-% xlabel("Cell size multiple (i think)")
-% ylabel("Various")
-% 
-% yyaxis right
-% scatter(cellsize_multiple,fillParameters(:,4),DisplayName="Wave Number")
-% ylabel("Wave Number")
-% legend
-% 
-% 
+% disp([' '])
+% disp(['Critical Injector Area ', num2str(A_star),' (m^2)']);

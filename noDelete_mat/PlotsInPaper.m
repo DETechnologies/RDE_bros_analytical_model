@@ -4,65 +4,65 @@ clear
 clc
 %  in the no-delete folder we have data from 
 
-%% This SECTION IS FOR VARYING MDOT ONLY!!
-% THIS PLOTS THE THRUST MDOT AND ISP FIGURE ----------------------------------------------------------------
-load('noDelete_mat\Output_data_jan04_vMdot_LP.mat')
-figure("Name","Thrust Mdot Isp @P0=1000kPa, T0=290K")
-grid on
-hold on
-plot(Output(:,37),Output(:,31));
-ylabel('Thrust [N]')
-% ylim([600 2200])
-
-yyaxis right
-plot(Output(:,37),Output(:,35));
-ylim([428 470])
-ylabel('Specific Impulse, I_{SP} [s]')
-
-xlabel('Mass flowrate, m_{dot} [kg/s]')
-legend('m_{dot}[kg/s]','I_{SP}[s]')
-xlim([0.18 0.4])
-
-% This plots the comparison data on top of ours.
-x=readtable('noDelete_mat\AmericanEngineData.xlsx');
-xlsx=table2array(x(:,1:3));
-
-AFRL=xlsx(1:20,1:3);
-Purdue=xlsx(21:27,1:3);
-UCF=xlsx(28:40,1:3);
-
-figure("Name","Thrust")
-grid on
-hold on
-plot(Output(:,37),Output(:,31),color="black");
-ylabel('Thrust [N]')
-
-scatter(AFRL(:,1),AFRL(:,2))
-scatter(Purdue(:,1),Purdue(:,2))
-scatter(UCF(:,1),UCF(:,2))
-
-xlabel('Mass flowrate, m_{dot} [kg/s]')
-legend('m_{dot}[kg/s]','AFRL','Purdue','UCF')
-xlim([0.25 0.40])
-ylim([0 2000])
-
-figure("Name","ISP")
-grid on
-hold on
-plot(Output(:,37),Output(:,35),color="black");
-hold on
-ylabel('Specific Impulse, I_{SP} [s]')
-
-scatter(AFRL(:,1),AFRL(:,3),color="r")
-scatter(Purdue(:,1),Purdue(:,3),color="y")
-scatter(UCF(:,1),UCF(:,3),color="m")
-
-xlabel('Mass flowrate, m_{dot} [kg/s]')
-legend('I_{SP}[s]','AFRL','Purdue','UCF')
-xlim([0.25 0.40])
-ylim([0 600])
+% %% This SECTION IS FOR VARYING MDOT ONLY!!
+% % THIS PLOTS THE THRUST MDOT AND ISP FIGURE ----------------------------------------------------------------
+% load('noDelete_mat\Output_data_jan04_vMdot_LP.mat')
+% figure("Name","Thrust Mdot Isp @P0=1000kPa, T0=290K")
+% grid on
+% hold on
+% plot(Output(:,37),Output(:,31));
+% ylabel('Thrust [N]')
+% % ylim([600 2200])
+% 
+% yyaxis right
+% plot(Output(:,37),Output(:,35));
+% ylim([428 470])
+% ylabel('Specific Impulse, I_{SP} [s]')
+% 
+% xlabel('Mass flowrate, m_{dot} [kg/s]')
+% legend('m_{dot}[kg/s]','I_{SP}[s]')
+% xlim([0.18 0.4])
+% 
+% % This plots the comparison data on top of ours.
+% x=readtable('noDelete_mat\AmericanEngineData.xlsx');
+% xlsx=table2array(x(:,1:3));
+% 
+% AFRL=xlsx(1:20,1:3);
+% Purdue=xlsx(21:27,1:3);
+% UCF=xlsx(28:40,1:3);
+% 
+% figure("Name","Thrust")
+% grid on
+% hold on
+% plot(Output(:,37),Output(:,31),color="black");
+% ylabel('Thrust [N]')
+% 
+% scatter(AFRL(:,1),AFRL(:,2))
+% scatter(Purdue(:,1),Purdue(:,2))
+% scatter(UCF(:,1),UCF(:,2))
+% 
+% xlabel('Mass flowrate, m_{dot} [kg/s]')
+% legend('m_{dot}[kg/s]','AFRL','Purdue','UCF')
+% xlim([0.25 0.40])
+% ylim([0 2000])
+% 
+% figure("Name","ISP")
+% grid on
+% hold on
+% plot(Output(:,37),Output(:,35),color="black");
+% hold on
+% ylabel('Specific Impulse, I_{SP} [s]')
+% 
+% scatter(AFRL(:,1),AFRL(:,3),color="r")
+% scatter(Purdue(:,1),Purdue(:,3),color="y")
+% scatter(UCF(:,1),UCF(:,3),color="m")
+% 
+% xlabel('Mass flowrate, m_{dot} [kg/s]')
+% legend('I_{SP}[s]','AFRL','Purdue','UCF')
+% xlim([0.25 0.40])
+% ylim([0 600])
 %% THIS SECTION IS FOR VARYING EQV RATIO ONLY!!!
-load('noDelete_mat\Output_data_dec22_veqvR.mat')
+load('Output_combined_EqvRvary_yesSean.mat')
 % THIS PLOTS THE CELL WIDTH FIGURE ----------------------------------------------------------------
 figure("Name","Cell Sizes - big")
 plt=loglog(Output(:,3),Output(:,16:19));
@@ -87,16 +87,17 @@ xlim([0.75 1.5])
 
 % THIS PLOTS EQV_R WITH A THRESHOLD LINE SHOWING WHERE 1.6MM IS.
 figure("Name","Cell Sizes - threshold")
-loglog(Output(:,3),Output(:,18),color=[0.9290, 0.6940, 0.1250]);
+loglog(Output(:,3),Output(:,16),color=[0, 0.4470, 0.7410]);
+% plot(Output(:,3),Output(:,16),color=[0, 0.4470, 0.7410]);
 hold on
 grid on
 yline(1.6/1000)
 
 xlabel("Equivalence Ratio φ")
 ylabel("Detonation Cell Size, λ [m]")
-legend("Gavrikov Cell Size [m]","Minimum Cell Size (1.6mm)")
-xlim([0.9 1.45])
-ylim([1.5/1000 1.8/1000])
+legend("Westbrook Cell Size [m]","Minimum Cell Size (1.6mm)")
+xlim([0.4 1.3])
+% ylim([1.5/1000 1.8/1000])
 
 % THIS PLOTS GEOMETRY RELATED THINGS in the following plots!!!!!!!!!!!!!!!!!!
 
@@ -154,7 +155,7 @@ ylabel("Minimum Fill Height, h^* [mm]")
 legend("Minimum Fill Height (method 1) [mm]","Maximum Equivalence Ratio φ (1.015)")
 xlim([0.65 1.05])
 %% vary pressure 
-load('noDelete_mat\Output_data_dec17_vpressure.mat')
+load('OutputVpressure_try2_yesSean.mat')
 
 % this is wavespeed and mdot plot in the paper ----------------------------------------------------------------
 figure("Name","Wavespeed and M_dot, T0=290K")
@@ -171,14 +172,14 @@ figure("Name","Cell Sizes varying pressure")
 plt=plot(Output(:,1),Output(:,16:19));
 grid on
 
-xlim([0.5e+6 1.65e+6])
+xlim([0.75*101.325e+3 2*101.325e+3])
 xlabel("Input Pressure P_0 [Pa]")
 ylabel("Detonation Cell Size, λ [m]")
 legend(Output_dataNames(1,16:19))
 
 
 %% this section plots things with varying input temperatures
-load('noDelete_mat\Output_data_dec14_vtemp.mat')
+load('OutputVtemp_try2_YesSean.mat')
 figure("Name","Cell Sizes varying temp")
 plt=loglog(Output(:,2),Output(:,16:19));
 grid on
@@ -186,3 +187,4 @@ grid on
 xlabel("Input Temperature T_0 [°K]")
 ylabel("Detonation Cell Size, λ [m]")
 legend(Output_dataNames(1,16:19))
+xlim([273 320])
