@@ -1,5 +1,5 @@
 %% Function Definition
-function Results = ZND_Structure(P1, T1, q, mech, gas1)
+function Results = ZND_Structure(P1, T1, q, mech, gas1,PrintThings)
 %% SET SHOCK SPEED
 [cj_speed, curve, ~, dnew, plot_data] = CJspeed(P1, T1, q, mech);
 % CJspeed_plot(2,plot_data,curve,dnew)

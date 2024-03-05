@@ -1,5 +1,5 @@
 %% Function Definition
-function Results = vN_State(P1, T1, q, mech, gas1)
+function Results = vN_State(P1, T1, q, mech, gas1,PrintThings)
 
 %% Set shock speed
 [cj_speed] = CJspeed(P1, T1, q, mech);
@@ -38,21 +38,22 @@ Results([12]) = H2;
 Results([13]) = M1;
 
 %% Print out
-disp([' '])
-disp(['................................................................']);
-disp('vN Point Properties');
-
-disp([' '])
-disp(['   Shock speed: ',num2str(Us),' (m/s)']);
-disp(['   Pressure: ',num2str(P2),' (Pa)']);
-disp(['   Temperature: ',num2str(T2),' (K)']);
-disp(['   Density: ',num2str(R2),' (kg/m3)']);
-%disp(['   Entropy: ',num2str(S2),' (J/kg-K)']);
-disp(['   Enthalpy: ',num2str(H2),' (J)']);
-disp(['   Mole Fractions: H2:',num2str(x2(1,1)),' & O2:',num2str(x2(4,1)), '(mol/mol)']);
-%disp(['   w2 (wave frame): ',num2str(w2),' (m/s)']);
-% disp(['   u2 (lab frame): ',num2str(u2),' (m/s)']);
-disp(['   c2 (frozen) (speed of sound for mixture): ',num2str(c2_fr),' (m/s)']);
-disp(['   gamma2 (frozen): ',num2str(gamma2_fr),' ']);
-
+if PrintThings
+    disp([' '])
+    disp(['................................................................']);
+    disp('vN Point Properties');
+    
+    disp([' '])
+    disp(['   Shock speed: ',num2str(Us),' (m/s)']);
+    disp(['   Pressure: ',num2str(P2),' (Pa)']);
+    disp(['   Temperature: ',num2str(T2),' (K)']);
+    disp(['   Density: ',num2str(R2),' (kg/m3)']);
+    %disp(['   Entropy: ',num2str(S2),' (J/kg-K)']);
+    disp(['   Enthalpy: ',num2str(H2),' (J)']);
+    disp(['   Mole Fractions: H2:',num2str(x2(1,1)),' & O2:',num2str(x2(4,1)), '(mol/mol)']);
+    %disp(['   w2 (wave frame): ',num2str(w2),' (m/s)']);
+    % disp(['   u2 (lab frame): ',num2str(u2),' (m/s)']);
+    disp(['   c2 (frozen) (speed of sound for mixture): ',num2str(c2_fr),' (m/s)']);
+    disp(['   gamma2 (frozen): ',num2str(gamma2_fr),' ']);
+end 
 end
