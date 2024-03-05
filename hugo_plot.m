@@ -4,9 +4,7 @@ clear
 clc 
 
 %% read data from excel
-% E = readtable("C:\Users\Logan\MATLAB Drive\RDE Bros\RDE initial params.xlsx");
-% E = readtable("C:\Users\Shakib\MATLAB Drive\RDE Bros\RDE initial params.xlsx"); %Shak Laptop
-E = readtable("E:\MatLab Drive\RDE Bros\RDE initial params.xlsx"); %Shak Desktop
+E = readtable("../RDE initial params.xlsx");
 
 %% define variables 
 % Define the range of rho2 values for which we want to plot the curve
