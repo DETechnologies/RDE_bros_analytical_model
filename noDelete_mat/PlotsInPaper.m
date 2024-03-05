@@ -66,6 +66,7 @@ load('Output_combined_EqvRvary_yesSean.mat')
 % THIS PLOTS THE CELL WIDTH FIGURE ----------------------------------------------------------------
 figure("Name","Cell Sizes - big")
 plt=loglog(Output(:,3),Output(:,16:19));
+hold on
 grid on
 
 % set(gca, 'XTick', [1:10])
@@ -73,33 +74,29 @@ set(gca, 'XTick', [0.2,0.4,0.6,0.8,1,2,3,4,5,6,7,8,9,10])
 xlabel("Equivalence Ratio φ")
 ylabel("Detonation Cell Size, λ [m]")
 legend(Output_dataNames(1,16:19))
+% % do not include sean CB in this plot it just makes a straight line.
+% legend("Westbrook Cell Size [m]","Cell Width Estimate (A=29)","Gavrikov Cell Size [m]","Ng. et al. Cell Size [m]", "SeanCB Cell Size [m]")
 % xlim([0.1 10])
-
-% THIS PLOTS THE CELL WIDTH FIGURE BETTER RESOLUTION  ----------------------------------------------------------------
-figure("Name","Cell Sizes - zoomed in")
-plt=loglog(Output(:,3),Output(:,16:19));
-grid on
-
-xlabel("Equivalence Ratio φ")
-ylabel("Detonation Cell Size, λ [m]")
-legend(Output_dataNames(1,16:19))
-xlim([0.75 1.5])
 
 % THIS PLOTS EQV_R WITH A THRESHOLD LINE SHOWING WHERE 1.6MM IS.
 figure("Name","Cell Sizes - threshold")
 loglog(Output(:,3),Output(:,16),color=[0, 0.4470, 0.7410]);
-% plot(Output(:,3),Output(:,16),color=[0, 0.4470, 0.7410]);
+loglog(Output(:,3),Output(:,16:19));
+
 hold on
 grid on
 yline(1.6/1000)
 
 xlabel("Equivalence Ratio φ")
 ylabel("Detonation Cell Size, λ [m]")
-legend("Westbrook Cell Size [m]","Minimum Cell Size (1.6mm)")
-xlim([0.4 1.3])
-% ylim([1.5/1000 1.8/1000])
+% legend("Westbrook Cell Size [m]","Minimum Cell Size (1.6mm)")
+legend("Westbrook Cell Size [m]","Cell Width Estimate (A=29)","Gavrikov Cell Size [m]","Ng. et al. Cell Size [m]", "Minimum Cell Size (1.6mm)")
 
-% THIS PLOTS GEOMETRY RELATED THINGS in the following plots!!!!!!!!!!!!!!!!!!
+% xlim([0.4 1.18])
+% ylim([1.075/1000 1.5/1000])
+
+% THIS PLOTS GEOMETRY RELATED THINGS in the following
+% plots!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 figure("Name","Geometry (all)")
 plot(Output(:,3),Output(:,20:27));
@@ -155,7 +152,7 @@ ylabel("Minimum Fill Height, h^* [mm]")
 legend("Minimum Fill Height (method 1) [mm]","Maximum Equivalence Ratio φ (1.015)")
 xlim([0.65 1.05])
 %% vary pressure 
-load('OutputVpressure_try2_yesSean.mat')
+load('OutputVPressure_v3_combined.mat')
 
 % this is wavespeed and mdot plot in the paper ----------------------------------------------------------------
 figure("Name","Wavespeed and M_dot, T0=290K")
@@ -176,6 +173,23 @@ xlim([0.75*101.325e+3 2*101.325e+3])
 xlabel("Input Pressure P_0 [Pa]")
 ylabel("Detonation Cell Size, λ [m]")
 legend(Output_dataNames(1,16:19))
+
+% this plots the thrust and pressure
+figure("Name","pressure vs thrust")
+plot(Output(:,1),Output(:,31));
+hold on
+plot([24e+3;880e+3],[1350;1350],Color="black"); % plot horizontal line at 1350N
+xlim([24e+3 880e+3])
+xlabel("Stagnation Pressure P_0 [Pa]")
+ylabel("Thrust [N]")
+% legend("Thrust (m_{dot} into engine)","Thrust Objective (1350N)")
+
+plot([101.325e+3;101.325e+3],[1000;2500],Color="black",LineStyle="--"); %this plots a vertical line showing where atmostpheric pressure is.
+yyaxis right
+ylabel("Detonation Cell Size \lambda [mm]")
+
+loglog(Output(:,1),Output(:,37),Color="black",LineStyle=":",LineWidth=2);
+legend("Thrust (m_{dot} into engine)","Thrust Objective (1350N)","Atmospheric Pressure (101.325kPa)","SeanCB Cell Size")
 
 
 %% this section plots things with varying input temperatures

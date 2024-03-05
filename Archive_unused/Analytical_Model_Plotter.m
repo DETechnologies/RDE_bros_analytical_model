@@ -3,10 +3,7 @@ close all force
 clear 
 clc
 
-% load("Output_data_dec11_V2.mat")
-% load("Output_data_dec11_new_all.mat")
-% load("Output_data_dec14_veqv.mat");
-load('noDelete_mat\Output_data_dec22_veqvR.mat')
+load("noDelete_mat\OutputVpressure_try2_yesSean2.mat")
 
 %% validate that the data is prepared the right way
 o=size(Output);

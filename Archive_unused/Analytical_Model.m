@@ -18,10 +18,11 @@ clear
 clc
 disp('Analytical_Model')
 
-P1 = 104000; % [Pa]
+P1 = 180e+3; % [Pa]
 T1 = 300;% [K]
 eq = 1.0;
-mech = 'Burke2012.yaml';
+% mech = 'Burke2012.yaml';
+mech = 'h2o2.yaml';
 % mech = 'Hong2011.yaml';
 % mech = 'sandiego20161214_H2only.yaml'; % this is fucked
 
@@ -79,22 +80,20 @@ disp(['Cell Size (Sean): ', num2str(cell_sean),' (mm)']);
 
 % Dimension are in millimeters, geometry calcs from hypergolic report
 cell_west = 29*Detonation_Structure(1,18);
-Minimum_Channel_OD = 40*cell_west*1000;
-Minimum_Channel_Width = 3*cell_west*1000;
-Minimum_Chamber_Length = 24*cell_west*1000;
-Minimum_Channel_ID = (Minimum_Channel_OD - 2*Minimum_Channel_Width);
+Minimum_Channel_OD = 40*cell_sean;
+Minimum_Channel_Width = 3*cell_sean;
+Minimum_Chamber_Length = 24*cell_sean;
+Minimum_Channel_ID = (Minimum_Channel_OD - (2*Minimum_Channel_Width));
 
 disp([' '])
 disp(['................................................................']);
 disp(['Geometry Definition'])
 
 disp([' '])
-% disp(['Cell Size: ', num2str(Detonation_Structure(1,22)),' (m)']);
 disp(['Minimum Channel OD (lambda): ', num2str(Minimum_Channel_OD),' (mm)']);
 disp(['Minimum Channel ID: ', num2str(Minimum_Channel_ID),' (mm)']);
 disp(['Minimum Channel Width (delta): ', num2str(Minimum_Channel_Width),' (mm)']);
 disp(['Minimum Channel Length (L): ', num2str(Minimum_Chamber_Length),' (mm)']);
-% disp(['TFinal (ZND): ', num2str(Detonation_Structure(1,14)),' (K)']);
 
 % % Using geometry calcs from big red
 % % Ian J Shaw et al., “A Theoretical Review of Rotating Detonation Engines”, doi: 10.5772.
@@ -122,12 +121,7 @@ disp(['Minimum Channel Length (L): ', num2str(Minimum_Chamber_Length),' (mm)']);
 % - "Analytical Models for the Thrust of a Rotating Detonation Engine" [J. Shepherd, J. Kasahara]
 
 Cl = 12;
-Fill_Height = (Cl)*cell_west; %This is the max critical fill height case
-
-% % LOGAN HARD CODING GEOMETRY SELECTED TO GET MDOT
-% Minimum_Channel_OD=55.11;
-% Minimum_Channel_Width=4.70;
-% Minimum_Channel_ID=Minimum_Channel_OD-2*Minimum_Channel_Width;
+Fill_Height = (Cl)*cell_sean; %This is the max critical fill height case
 
 Fill_Volume = 0.25*pi*(((Minimum_Channel_OD/1000).^2)-((Minimum_Channel_ID/1000).^2))*Fill_Height;
 
@@ -135,12 +129,7 @@ m_dot_P_history = Fill_Height*(Minimum_Channel_Width/1000)*CJ_Point(1,4)*CJ_Poin
 % [J. Shepherd, J. Kasahara]
 
 C = pi()*(Minimum_Channel_OD/1000);
-m_dot_intoengine=(Fill_Volume*R1*CJ_Point(1,1)/C); 
-
-m_dot_set = 0.32;
-
-% m_dot_tot_exit = (Minimum_Channel_Width/1000)*C*CJ_Point(1,4)*CJ_Point(1,1);
-% typical rho*v*A equation at the exit surface, though CJ speed is not the axial speed of expanded gas
+m_dot_intoengine=(Fill_Volume*CJ_Point(1,4)*CJ_Point(1,1)/C); 
 
 % m_dot_H2 = m_dot_tot*H2_Percent;
 % m_dot_O2 = m_dot_tot*O2_Percent;
@@ -207,9 +196,6 @@ f = V_w/(2*pi);
 T = 1/f;
 P_a = 101325;
 
-% q_hc = -241800*m_dot_H2*Detonation_Structure(1,23)/0.00202; %heat released based on H2 heat of combustion and the amount of H2 being used
-% q_HEX = ((241800-67.63*0.5*2)/2.01568)*1000; % [J/kg] final units, numerator units [J/mol] (heat of combustion and other junk), denom units [g/mol] (of compound)
-% q_HEX = ((0.5*285830)/2.01568)*1000; % [J/kg]
 q_h_0 = (241820/18.01528)*1000; % [J/kg] same method as used in hugoniot spread sheet, *1000 is for g->kg conversion
 
 q_h_1 = (c1_fr^2)*((((1+gamma1_fr*(((CJ_Point(1,1)/c1_fr)^2)))^2)/(2*((CJ_Point(1,14)^2)-1)))*((CJ_Point(1,14)/gamma1_fr)^2)*(1/((CJ_Point(1,1)/c1_fr)^2))-(1/(gamma1_fr-1))-(((CJ_Point(1,1)/c1_fr)^2)/2));
@@ -251,8 +237,6 @@ disp(['Specific Thrust (Expanded): ', num2str(Tsp_e), ' (N/kg/s)']);
 % - "SDToolbox: Numerical Tools for Shock and Detonation Wave Modeling" 
 % [S. Kao, J. Ziegler, N. Bitter, B. Schmidt, J. Lawson, J. E. Shepherd]
 
-% Isp_ue = T_ue/(m_dot_tot*9.81);
-
 Isp_e = T_e/(m_dot_P_history*9.81);
 
 disp([' '])
@@ -260,7 +244,6 @@ disp(['................................................................']);
 disp(['Specific Impulse'])
 
 disp([' '])
-% disp(['Isp (Under Expanded): ', num2str(Isp_ue),' (s)']);
 disp(['Isp (Expanded): ', num2str(Isp_e),' (s)']);
 disp(['Isp: ', num2str(T_e/(m_dot_P_history*9.81)),' (s)']);
 
@@ -269,13 +252,10 @@ disp(['Isp: ', num2str(T_e/(m_dot_P_history*9.81)),' (s)']);
 % - "Small-size rotating detonation engine: scaling and minimum mass flow
 % rate" [Sean Connolly-Boutin et al]
 
-% FINISH WHEN STAGNATION PARAMETRES CALCULATED FROM PIPING FANNO FLOW
-% ANALYSIS
-
 % P_o = ;
 % T_o = ;
 % 
-% A_star = m_dot_P_history/((SQRT()*P_o)/(SQRT(R_sp)*T-o);
+% A_star = m_dot_P_history/((SQRT(gamma1_fr)*P_o)/(SQRT(R_sp/w1)*T-o);
 % 
 % disp([' '])
 % disp(['................................................................']);
@@ -283,3 +263,9 @@ disp(['Isp: ', num2str(T_e/(m_dot_P_history*9.81)),' (s)']);
 % 
 % disp([' '])
 % disp(['Critical Injector Area ', num2str(A_star),' (m^2)']);
+
+%% Piping System Analysis
+
+
+%% Nozzle Design
+
