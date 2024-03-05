@@ -246,26 +246,3 @@ disp(['Specific Impulse'])
 disp([' '])
 disp(['Isp (Expanded): ', num2str(Isp_e),' (s)']);
 disp(['Isp: ', num2str(T_e/(m_dot_P_history*9.81)),' (s)']);
-
-%% Critical Injector Area Calculation
-% Equations taken from:
-% - "Small-size rotating detonation engine: scaling and minimum mass flow
-% rate" [Sean Connolly-Boutin et al]
-
-% P_o = ;
-% T_o = ;
-% 
-% A_star = m_dot_P_history/((SQRT(gamma1_fr)*P_o)/(SQRT(R_sp/w1)*T-o);
-% 
-% disp([' '])
-% disp(['................................................................']);
-% disp(['Critical Injector Area'])
-% 
-% disp([' '])
-% disp(['Critical Injector Area ', num2str(A_star),' (m^2)']);
-
-%% Piping System Analysis
-
-
-%% Nozzle Design
-
