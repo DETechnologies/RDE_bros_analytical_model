@@ -1,8 +1,20 @@
 function [gas1,vN_Point,CJ,ZND,CellSizePredictions,Misc,GeometryPredictor] = NewAnalyticalModel(P1,T1,eq,mech,Bykovskii_adder,CellCorr2Use,GeometryRule,PrintThings)
-% -5<Bykovskii_adder<5
+% Bykovskii_adder: [-5:+5]
+%       This drives the 12+5 Bykovskii relation. Used in both Bykovskii
+%       geometry relations and Nair geometry relations (which are derived
+%       from Bykovskii)
 % CellCorr2Use one of these NUMBERS {'Gavrikov','Westbrook','Ng','SeanCB'}=1,2,3,4
+%       This is only used in the thrust correlations - we need to know what
+%       cell size param to grab, because its not really worth calculating
+%       all of them. A potential future improvement is adding this into the
+%       geometry calculating loop.
 % Geometry rule; 0=nair, 1=bykovskii
+%       This is only used in the thrust correlations - we need to know what
+%       cell size param to grab, because its not really worth calculating
+%       all of them. A potential future improvement is adding this into the
+%       geometry calculating loop.
 % Print things 1/0 
+%       print output things to look at. Boolean.
 
 troubleshooting=0%dont hide this line o/p --> failsafe
 if troubleshooting
