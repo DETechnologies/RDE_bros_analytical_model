@@ -61,10 +61,10 @@ disp(['   Cp1 (frozen): ',num2str(cp1),' (J/kg*K) ']); %
 disp(['   Mean Molecular Weight: ',num2str(w1),'(kg/kmol) ']); 
 
 %% Calculating von Neumann Point
-vN_Point = vN_State(P1, T1, FAR, mech, gas1);
+vN_Point = vN_State(P1, T1, FAR, mech, gas1,1);
 
 %% Calculating CJ State
-CJ_Point = CJ_State(P1, T1, FAR, mech, gas1);
+CJ_Point = CJ_State(P1, T1, FAR, mech, gas1,1);
 
 %% Calculating ZND Detonation Structure
 Detonation_Structure = ZND_Structure_Shak(P1, T1, FAR, mech, gas1); %we only pull cell size from this
