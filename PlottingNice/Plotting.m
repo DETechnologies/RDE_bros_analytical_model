@@ -2,7 +2,7 @@ close all force
 clear 
 clc
 
-load("AnalyticalModel_calculatorOutput_vPressure_March5.mat")
+load("AnalyticalModel_calculatorOutput_vPressure_March6_westbrook.mat")
 
 %thrust plot ---------------------------------------------------------------
 figure("Name","pressure vs thrust")
@@ -20,19 +20,22 @@ ylabel("Detonation Cell Size \lambda [mm]")
 loglog(Outputs{:,"I/P Pressure (Pa)"},Outputs{:,"Cell Size value"},Color="black",LineStyle=":",LineWidth=2);
 legend("Thrust","Thrust Objective (1350N)","Atmospheric Pressure (101.325kPa)","SeanCB Cell Size")
 
-
-
 %mdot plot ---------------------------------------------------------------
 figure("Name","pressure vs mdot")
 plot(Outputs{:,"I/P Pressure (Pa)"},Outputs{:,"mDot"});
 xlabel("Initial Pressure P_0 [Pa]")
 ylabel("mass flow rate")
 
-
-
 %UCJ and cell size plot
 figure("Name","pressure vs mdot")
 plot(Outputs{:,"CJ Speed (m/s)"},Outputs{:,"Cell Size value"});
 ylabel("Cell Size")
 xlabel("CJ Speed")
+
+%plot all cell sizes
+figure("Name","pressure vs mdot")
+loglog(Outputs{:,"I/P Pressure (Pa)"},[Outputs{:,"SeanCB cell Size"},Outputs{:,"Westbrook Cell Size"},Outputs{:,"Gav Cell Size"},Outputs{:,"NG Cell Size"}]);
+legend("seancb","west","gav","ng")
+ylabel("Cell Size")
+xlabel("IP Pressure")
 
