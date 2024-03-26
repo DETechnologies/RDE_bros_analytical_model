@@ -18,11 +18,11 @@ clear
 clc
 disp('Analytical_Model')
 
-P1 = 180e+3; % [Pa]
+P1 = 500e+3; % [Pa]
 T1 = 300;% [K]
 eq = 1.0;
-% mech = 'Burke2012.yaml';
-mech = 'h2o2.yaml';
+mech = 'Burke2012.yaml';
+% mech = 'h2o2.yaml';
 % mech = 'Hong2011.yaml';
 % mech = 'sandiego20161214_H2only.yaml'; % this is fucked
 
@@ -69,8 +69,8 @@ CJ_Point = CJ_State(P1, T1, FAR, mech, gas1,1);
 %% Calculating ZND Detonation Structure
 Detonation_Structure = ZND_Structure_Shak(P1, T1, FAR, mech, gas1); %we only pull cell size from this
 
-cell_sean = (1.6*101325)/P1;
-disp(['Cell Size (Sean): ', num2str(cell_sean),' (mm)']);
+cell_sean = ((1.6e-3*101325)/P1);
+disp(['Cell Size (Sean): ', num2str(cell_sean),' (m)']);
 %% Geometry Definition
 % Equations taken from: 
 % - "Detonation cell size of liquid hypergolic propellants: Estimation from a non-premixed combustor [Anil P. Nair,
@@ -81,7 +81,7 @@ disp(['Cell Size (Sean): ', num2str(cell_sean),' (mm)']);
 % Dimension are in millimeters, geometry calcs from hypergolic report
 cell_west = 29*Detonation_Structure(1,18);
 Minimum_Channel_OD = 40*cell_sean;
-Minimum_Channel_Width = 3*cell_sean;
+Minimum_Channel_Width = 2.4*cell_sean;
 Minimum_Chamber_Length = 24*cell_sean;
 Minimum_Channel_ID = (Minimum_Channel_OD - (2*Minimum_Channel_Width));
 
@@ -125,7 +125,7 @@ Fill_Height = (Cl)*cell_sean; %This is the max critical fill height case
 
 Fill_Volume = 0.25*pi*(((Minimum_Channel_OD/1000).^2)-((Minimum_Channel_ID/1000).^2))*Fill_Height;
 
-m_dot_P_history = Fill_Height*(Minimum_Channel_Width/1000)*CJ_Point(1,4)*CJ_Point(1,1); %density of combustion products, and cj speed
+m_dot_P_history = Fill_Height*(Minimum_Channel_Width)*density(gas1)*CJ_Point(1,1); %density of combustion products, and cj speed
 % [J. Shepherd, J. Kasahara]
 
 C = pi()*(Minimum_Channel_OD/1000);

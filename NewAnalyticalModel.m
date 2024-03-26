@@ -26,7 +26,7 @@ if troubleshooting
     eq = 1.0;
     mech = 'Burke2012.yaml';
     CellCorr2Use=4
-    GeometryRule=1
+    GeometryRule=0
     PrintThings=1
 end 
 
@@ -35,12 +35,14 @@ end
 %     Numerical Solution Methods for Shock and Detonation Jump Conditions, S.
 %     Browne, J. Ziegler, and J. E. Shepherd, GALCIT Report FM2006.006 - R3,
 %     California Institute of Technology Revised September, 2018.
+
 %% Initial State (pre-combustion) - State 1 (one)
-CellCorr2Use=CellCorr2Use*2;
+CellCorr2Use = CellCorr2Use*2;
 gas1 = Solution(mech);
-eq=InitialState(T1,P1,eq,gas1); % mol ratio of fuel:ox
+eq = InitialState(T1,P1,eq,gas1); % mol ratio of fuel:ox
 FAR = sprintf('H2:%d O2:%d',eq(1,1),eq(2,1)); % Fuel:Oxidizer mol ratio in string
-P_a=101.325e+3; %P_atm in pa
+P_a = 101.325e+3; %P_atm in Pa
+
 %% Calculating combustion parameters to be used later
 % Calculating VN Point
 vN_Point = vN_State(P1, T1, FAR, mech, gas1,PrintThings);
@@ -49,14 +51,15 @@ CJ = CJ_State(P1, T1, FAR, mech, gas1,PrintThings);
 % Calculating ZND
 ZND = ZND_Structure(P1, T1, FAR, mech, gas1,PrintThings); % all cell sizes in [m]
 % Sean Conolly-Boutin Additions
-SeanCB_CellSize = ((1.6*101.325e+3)/P1)/1000; % [m]
-CellSizePredictions=table(ZND(22),ZND(18),ZND(21),SeanCB_CellSize,'VariableNames',{'Gavrikov','Westbrook','Ng','SeanCB'});
+SeanCB_CellSize = ((1.6e-3*101.325e+3)/P1); % [m]
+CellSizePredictions = table(ZND(22),29*ZND(18),ZND(21),SeanCB_CellSize,'VariableNames',{'Gavrikov','Westbrook','Ng','SeanCB'});
+
 %% Geometry
 % Methods:
 % F. A. Bykovskii, S. A. Zhdan, and E. F. Vedernikov, "Continuous spin detonations,” Journal of propulsion and power, vol. 22, no. 6, pp. 1204–1216, 2006
 % A. P. Nair, A. R. Keller, N. Q. Minesi, D. I. Pineda, and R. M. Spearrin, "Detonation cell size of liquid hypergolic propellants: Estimation from a non-premixed combustor," Proceedings of the Combustion Institute, vol. 39, no. 3, pp. 2757–2765, 2023.
 if ~ exist("Bykovskii_adder",'var')
-    Bykovskii_adder=0; % this is the 12+5 thing
+    Bykovskii_adder = 0; % this is the 12+5 thing
 end
 for i=1:size(CellSizePredictions,2) 
     %each loop adds two rows.
@@ -76,10 +79,11 @@ for i=1:size(CellSizePredictions,2)
        GeometryPredictor=[GeometryPredictor;NewR]; 
     end
 end 
+
 %% Some Sean Things
 R_sp = 8.314462618;
 Wave_Number_Sean = (GeometryPredictor{CellCorr2Use-GeometryRule,'Mass Flow Rate kg/s'}*R_sp*T1)/((12+Bykovskii_adder)*0.0016*101325*CJ(1,1)*GeometryPredictor{CellCorr2Use-GeometryRule,'MinFillHeight'});
-Mean_Channel_Diam=GeometryPredictor{CellCorr2Use-GeometryRule,'MinChannelOD'}-GeometryPredictor{CellCorr2Use-GeometryRule,'MinChannelWidth'};
+Mean_Channel_Diam = GeometryPredictor{CellCorr2Use-GeometryRule,'MinChannelOD'}-GeometryPredictor{CellCorr2Use-GeometryRule,'MinChannelWidth'};
 Fill_Time_Sean = (pi*(Mean_Channel_Diam))/(CJ(1,1)*Wave_Number_Sean);
 
 %% Thrust Calcs
@@ -93,4 +97,11 @@ Thrust = GeometryPredictor{CellCorr2Use-GeometryRule,'Mass Flow Rate kg/s'}*(sqr
 SpecThrust = Thrust/GeometryPredictor{CellCorr2Use-GeometryRule,'Mass Flow Rate kg/s'};
 ISP = Thrust/(GeometryPredictor{CellCorr2Use-GeometryRule,'Mass Flow Rate kg/s'}*9.81);
 
-Misc=table(Wave_Number_Sean,Mean_Channel_Diam,Fill_Time_Sean,Thrust,SpecThrust,ISP);
+%% Shak's Playground
+Thrust_Goal = 1350; %[N]
+
+m_dot_T = Thrust_Goal / ((sqrt(2*cp_mass(gas1)*T1)) * (sqrt(1 + Term_1b - Term_2b * Term_3b * Term_4b))); %[kg/s]
+
+m_dot_V = GeometryPredictor{CellCorr2Use-GeometryRule,'MinFillHeight'}*GeometryPredictor{CellCorr2Use-GeometryRule,'MinChannelWidth'}*density(gas1)*CJ(1,1); %[kg/s]
+
+Misc=table(Wave_Number_Sean,Mean_Channel_Diam,Fill_Time_Sean,Thrust,SpecThrust,ISP,Thrust_Goal,m_dot_T,m_dot_V);

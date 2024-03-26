@@ -1,10 +1,10 @@
 %% Set Input Parameters
 clear
-clc
+% clc
 close all all force
 disp('Analytical Model Calculator')
 
-Pressure_range=[180e+3,8*101.325e+3,1e+3]; % low,high,step size % in pascals (range 5 atm to 25 atm (500psi))
+Pressure_range=[500e+3,500e+3,1e+3]; % low,high,step size % in pascals (range 5 atm to 25 atm (500psi))
 Temp_range=[300,300,1]; % low,high,step size % in Kelvin
 eqv_ratio_range=[1,1,0.05];  % low,high,step size %no units
 
@@ -85,33 +85,33 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
             cell_ng=ZNDResults(21);
             
             %sean CB stuff
-            cell_sean = (1.6*101325)/p;
+            cell_sean = (1.6e-3*101325)/p;
 
             %geometry defns
-            Minimum_Channel_OD=40*cell_gav*1000;
-            Minimum_Channel_Width=2.4*cell_gav*1000;
+            Minimum_Channel_OD=40*cell_sean;
+            Minimum_Channel_Width=2.4*cell_sean;
             Minimum_Channel_ID = (Minimum_Channel_OD - 2*Minimum_Channel_Width);
-            Minimum_Chamber_Length=24*cell_gav*1000;
+            Minimum_Chamber_Length=24*cell_sean;
 
             %geometry big red 
-            big_red_minimumFillHeight=(12+0)*cell_gav*1000;
-            big_red_minD=28*cell_gav*1000;
+            big_red_minimumFillHeight=(12+0)*cell_gav;
+            big_red_minD=28*cell_gav;
             big_red_min_delta=0.2*big_red_minimumFillHeight;
             big_red_minLength=2*big_red_minimumFillHeight;
             
             %m_dots
             Fill_Height = (12-0)*cell_sean; %This is the max critical fill height case
-            Fill_Volume = 0.25*pi*(((Minimum_Channel_OD/1000).^2)-((Minimum_Channel_ID/1000).^2))*Fill_Height;
+            Fill_Volume = 0.25*pi*(((Minimum_Channel_OD).^2)-((Minimum_Channel_ID).^2))*Fill_Height;
 %             m_dot_tot_exit = Fill_Height*(Minimum_Channel_Width/1000)*CJ_density*CJ_spd; %density of combustion products, and cj speed
 %             C=pi()*(Minimum_Channel_OD/1000);
 %             m_dot_intoengine=(Fill_Volume*R2*CJ_spd/C);
             
             % not proud of this (ignore)
-            CJ_Point = CJ_State(p, t, FAR, mech, gas_i);
+            CJ_Point = CJ_State(p, t, FAR, mech, gas_i,1);
             P1=p;
             T1=t;
 
-            m_dot_P_history = Fill_Height*(Minimum_Channel_Width/1000)*CJ_Point(1,4)*CJ_Point(1,1); %density of combustion products, and cj speed
+            m_dot_P_history = Fill_Height*(Minimum_Channel_Width)*density(gas_i)*CJ_Point(1,1); %density of combustion products, and cj speed
             % [J. Shepherd, J. Kasahara]
 
             % thrust
@@ -146,7 +146,7 @@ for p=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
 
             sz=size(Output);
             fprintf('\n \nlooptime: %d, loop number: %d of %d',toc,n,total_loops)
-            save('noDelete_mat/Output_troubleshooting.mat','Output',"Output_dataNames") %% saves the file as .mat file for later accessing saving here incase it errors out, overwrite each loop
+            save('Output_troubleshooting.mat','Output',"Output_dataNames") %% saves the file as .mat file for later accessing saving here incase it errors out, overwrite each loop
         end 
     end
 end
