@@ -18,7 +18,7 @@ clear
 clc
 disp('Analytical_Model')
 
-P1 = 500e+3; % [Pa]
+P1 = 130e+3; % [Pa]
 T1 = 300;% [K]
 eq = 1.0;
 mech = 'Burke2012.yaml';
@@ -188,7 +188,6 @@ disp(['Fill Time (Sean): ', num2str(Fill_Time_Sean),' (s)']);
 %% Thrust Calculation (Check)
 % Equations taken from:
 % - "Analytical Models for the Thrust of a Rotating Detonation Engine" [J. Shepherd, J. Kasahara]
-% - "Techniques for the Estimation of Heats of Explosion (HEX) Using Thermochemical Codes" [Robert A. Fifer, Jeffery B. Morris]
 % - "Numerical Solution Methods for Shock and Detonation Jump Conditions" [S. Browne, J. Ziegler, and J. E. Shepherd]
 
 V_w = CJ_Point(1,1)/(((Minimum_Channel_OD/1000)+(Minimum_Channel_ID/1000))/2); %cj speed

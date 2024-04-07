@@ -11,7 +11,7 @@ P1 = 130e+3; % [Pa]
 T1 = 300;% [K]
 eq = 1.0;
 mechFiles={'Burke2012.yaml';'h2o2.yaml';'Hong2011.yaml'};
-mech = mechFiles{1}; %1 means it uses the first one (burke) (first row (row matrix))
+mech = mechFiles{2}; %1 means it uses the first one (burke) (first row (row matrix))
 
 %% Call function that does the actual maths
 [gas1,vN_Point,CJ,ZND,CellSizePredictions,Misc,GeometryPredictor] = NewAnalyticalModel(P1,T1,eq,mech,0,4,1,1);
@@ -44,3 +44,4 @@ fprintf('\nThrust Goal: %d [N]', Misc{1,"Thrust_Goal"})
 fprintf('\n\nMass Flow')
 fprintf('\nThrust Based Mass Flow: %d [kg/s]', Misc{1,"m_dot_T"})
 fprintf('\nChamber Volume Mass Flow: %d [kg/s]', Misc{1,"m_dot_V"})
+fprintf('\nPropellant Fill Height to hit 1350N: %d [m]',Misc{1,"m_dot_T"}/(1*5e-3*density(gas1)*CJ(1)))

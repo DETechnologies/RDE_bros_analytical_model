@@ -1,7 +1,8 @@
-pt1=load('noDelete_mat\OutputVPressure_v3.mat');
-pt2=load('noDelete_mat\OutputVPressure_v3_2.mat');
-% pt3=load('noDelete_mat\OutputVEqvR_YesSean3.mat');
+pt1=load('PlottingNice\AnalyticalModelCalculator_March26Results.mat');
+pt2=load('PlottingNice\AnalyticalModelCalculator_March26Results_pt2.mat');
+pt3=load('PlottingNice\AnalyticalModelCalculator_March26Results_pt3.mat');
+pt4=load('PlottingNice\AnalyticalModelCalculator_March26Results_pt4.mat');
 
-Output=[pt1.Output;pt2.Output];
-Output_dataNames=pt1.Output_dataNames;
-save('noDelete_mat\OutputVPressure_v3_combined.mat','Output',"Output_dataNames")
+Outputs=[pt1.Outputs;pt2.Outputs;pt3.Outputs;pt4.Outputs;];
+% Output_dataNames=pt1.Output_dataNames;
+save('PlottingNice\combined.mat','Outputs')

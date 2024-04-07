@@ -9,8 +9,8 @@ clc
 mechFiles={'Burke2012.yaml';'h2o2.yaml';'Hong2011.yaml'};
 mech = mechFiles{1}; %1 means it uses the first one (burke) (first row (row matrix))
 
-Pressure_range=[2e+3,1.4e+6,1e+3]; % low,high,step size [Pa]
-Temp_range=[300,300,1]; % low,high,step size [K]
+Pressure_range=[130e+3,130e+3,1e+3]; % low,high,step size [Pa]
+Temp_range=[285,400,1]; % low,high,step size [K]
 eqv_ratio_range=[1,1,0.05];  % low,high,step size 
 CellSizeCorrelationIndex = 4;
 GeometryCorrelationIndex = 0;
@@ -35,7 +35,7 @@ for P1=Pressure_range(1,1):Pressure_range(1,3):Pressure_range(1,2)
 
             Outputs=[Outputs;current];
             if ~ mod(n,10) %save o/p every n loops so its fast, but that we dont lose too much data when errors.
-                save('PlottingNice/AnalyticalModelCalculator_March26Results.mat','Outputs') 
+                save('PlottingNice/AnalyticalModelCalculator_April2_vTemp.mat','Outputs') 
                 fprintf('loop number: %d',n)
             end
         end
